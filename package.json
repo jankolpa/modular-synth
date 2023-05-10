@@ -1,0 +1,33 @@
+{
+  "name": "modular-synth-thesis",
+  "version": "1.0.0",
+  "description": "Entwicklung eines webbasierten modularen Synthesizers mit integrierter Modulentwicklung",
+  "main": "app.js",
+  "scripts": {
+    "watch": "gulp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jankolpa/modular-synth.git"
+  },
+  "author": "Jan-Slava Kolpakov",
+  "license": "ISC",
+  "dependencies": {
+    "browser-sync": "^2.29.1",
+    "build": "^0.1.4",
+    "cssnano": "^6.0.0",
+    "gulp-cli": "^2.3.0",
+    "gulp-postcss": "^9.0.1",
+    "gulp-sass": "^5.1.0",
+    "gulp-terser": "^2.1.0",
+    "postcss": "^8.4.23",
+    "sass": "^1.62.0"
+  },
+  "bugs": {
+    "url": "https://github.com/jankolpa/modular-synth/issues"
+  },
+  "homepage": "https://github.com/jankolpa/modular-synth#readme",
+  "devDependencies": {
+    "gulp": "^4.0.2"
+  }
+}
