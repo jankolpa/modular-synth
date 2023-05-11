@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html lang="de">
+<link href="node_modules/gridstack/dist/gridstack.min.css" rel="stylesheet" />
+<script src="node_modules/gridstack/dist/gridstack-all.js"></script>
 
 <head>
   <meta charset="UTF-8">
@@ -11,8 +13,10 @@
 
 <body>
 
-  <h1>Modular Synth</h1>
-
+  <div id="top-bar">
+    <h1>Modular Synth</h1>
+  </div>
+  <div class="grid-stack"></div>
 
   <script type="module" src="/dist/script.js"></script>
 </body>

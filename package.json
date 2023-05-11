@@ -16,6 +16,7 @@
     "browser-sync": "^2.29.1",
     "build": "^0.1.4",
     "cssnano": "^6.0.0",
+    "gridstack": "^8.1.0",
     "gulp-cli": "^2.3.0",
     "gulp-postcss": "^9.0.1",
     "gulp-sass": "^5.1.0",

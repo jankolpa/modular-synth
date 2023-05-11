@@ -1,3 +1,43 @@
+$topBarHeight: 70px;
+$scrollBarHeight: 50px;
+
 body {
     font-family: Arial, Helvetica, sans-serif;
+    height: calc(100vh - $scrollBarHeight);
+}
+
+#top-bar {
+    height: $topBarHeight;
+}
+
+.grid-stack {
+    background: #FAFAD2;
+    height: calc(100vh - $topBarHeight - $scrollBarHeight);
+}
+
+.grid-stack-item-content {
+    background-color: #18BC9C;
+    border: black 1px solid;
+}
+
+// calculate width of grid-stack-item 
+$columns: 25;
+
+@function fixed($float) {
+    @return calc(round($float * 100) / 100); // total 4 digits being %
+}
+
+.grid-stack-#{$columns}>.grid-stack-item {
+
+    min-width: fixed(calc(100% / $columns));
+
+    @for $i from 1 through $columns - 1 {
+        &[gs-x='#{$i}'] {
+            left: fixed(calc(100% / $columns) * $i);
+        }
+
+        &[gs-w='#{$i+1}'] {
+            width: fixed(calc(100% / $columns) * ($i+1));
+        }
+    }
 }
