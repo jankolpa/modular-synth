@@ -20,6 +20,7 @@ body {
 .grid-stack-item-content {
     background-color: #18BC9C;
     border: black 1px solid;
+    box-sizing: border-box;
 }
 
 // calculate width of grid-stack-item 

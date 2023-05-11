@@ -1,9 +1,11 @@
+"use strict";
+
 // create grid
 var items = [
-    { w: 1, h: 1, noResize: true, content: 'my first widget' },
-    { w: 2, h: 1, noResize: true, content: 'another longer widget!' },
-    { w: 1, h: 1, noResize: true, content: 'another longer widget!' },
-    { w: 2, h: 1, noResize: true, content: 'another longer widget!' }
+    { w: 1, h: 1, noResize: true, content: '<div class="module">my first widget</div>' },
+    { w: 2, h: 1, noResize: true, content: '<div class="module">another longer widget!</div>' },
+    { w: 1, h: 1, noResize: true, content: '<div class="module">another longer widget!</div>' },
+    { w: 2, h: 1, noResize: true, content: '<div class="module">another longer widget!</div>' }
 ];
 
 var gridHeight = (document.body.offsetHeight - document.getElementById('top-bar').offsetHeight) / 2;
@@ -16,9 +18,11 @@ var grid = GridStack.init({
     margin: 0,
     column: 25,
     float: true,
-    disableOneColumnMode: true
+    disableOneColumnMode: true,
+    animate: false
 });
 grid.load(items);
+console.log(grid);
 
 
 
@@ -87,16 +91,21 @@ function stopScrollRight() {
 
 // on resize-event
 var style = document.createElement('style');
+var zoomfactor;
+zoomfactor = (gridHeight / 4).toFixed(2);
 document.head.appendChild(style);
+style.innerHTML = '.module{zoom: ' + zoomfactor + '%;}';
 
 addEventListener("resize", (event) => {
     gridHeight = (document.body.offsetHeight - document.getElementById('top-bar').offsetHeight) / 2;
     document.getElementsByClassName('grid-stack')[0].style.width = '' + gridHeight * 6 + 'px';
+    zoomfactor = (gridHeight / 4).toFixed(2);
 
     style.innerHTML = '.grid-stack{ height: ' + 2 * gridHeight + 'px !important; min-height: ' + 2 * gridHeight + 'px !important; }' +
         '.grid-stack-item { height: ' + gridHeight + 'px !important; min-height: ' + gridHeight + 'px !important; }' +
-        ' .grid-stack-item-content { height: ' + gridHeight + 'px !important; min-height: ' + gridHeight + 'px !important; }' +
-        ' .grid-stack-item[gs-y="1"]:not(.ui-draggable-dragging) { top: ' + gridHeight + 'px !important; }';
+        ' .grid-stack-item-content { min-height: ' + gridHeight + 'px !important; }' +
+        ' .grid-stack-item[gs-y="1"]:not(.ui-draggable-dragging) { top: ' + gridHeight + 'px !important; }' + 
+        ' .module{zoom: ' + zoomfactor + '%;}';
 
     grid.opts.cellHeight = gridHeight;
 });
