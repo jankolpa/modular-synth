@@ -1,13 +1,20 @@
-$topBarHeight: 70px;
-$scrollBarHeight: 50px;
+$topBarHeight: 45px;
+$scrollBarHeight: 28px;
 
 body {
     font-family: Arial, Helvetica, sans-serif;
     height: calc(100vh - $scrollBarHeight);
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 #top-bar {
     height: $topBarHeight;
+
+    h1 {
+        margin: 0;
+        margin-top: 10px;
+    }
 }
 
 .grid-stack {
@@ -24,7 +31,7 @@ body {
 }
 
 // calculate width of grid-stack-item 
-$columns: 25;
+$columns: 50;
 
 @function fixed($float) {
     @return calc(round($float * 100) / 100); // total 4 digits being %

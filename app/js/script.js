@@ -2,10 +2,10 @@
 
 // create grid
 var items = [
-    { w: 1, h: 1, noResize: true, content: '<div class="module">my first widget</div>' },
+    { w: 2, h: 1, noResize: true, content: '<div class="module">my first widget</div>' },
+    { w: 4, h: 1, noResize: true, content: '<div class="module">another longer widget!</div>' },
     { w: 2, h: 1, noResize: true, content: '<div class="module">another longer widget!</div>' },
-    { w: 1, h: 1, noResize: true, content: '<div class="module">another longer widget!</div>' },
-    { w: 2, h: 1, noResize: true, content: '<div class="module">another longer widget!</div>' }
+    { w: 3, h: 1, noResize: true, content: '<div class="module">another longer widget!</div>' }
 ];
 
 var gridHeight = (document.body.offsetHeight - document.getElementById('top-bar').offsetHeight) / 2;
@@ -16,7 +16,7 @@ var grid = GridStack.init({
     minRow: 2,
     maxRow: 2,
     margin: 0,
-    column: 25,
+    column: 50,
     float: true,
     disableOneColumnMode: true,
     animate: false
