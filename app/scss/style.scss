@@ -13,6 +13,8 @@ body {
 .grid-stack {
     background: #FAFAD2;
     height: calc(100vh - $topBarHeight - $scrollBarHeight);
+    transition: none;
+    overflow-y: hidden;
 }
 
 .grid-stack-item-content {
