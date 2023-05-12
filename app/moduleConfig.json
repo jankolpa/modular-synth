@@ -1,0 +1,12 @@
+{
+    "modules": [
+        {
+            "name": "test1Module",
+            "width": 3
+        },
+        {
+            "name": "test2Module",
+            "width": 2
+        }
+    ]
+}

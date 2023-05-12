@@ -18,14 +18,14 @@ body {
 }
 
 .grid-stack {
-    background: #FAFAD2;
+    background: #dddddd;
     height: calc(100vh - $topBarHeight - $scrollBarHeight);
     transition: none;
     overflow-y: hidden;
 }
 
 .grid-stack-item-content {
-    background-color: #18BC9C;
+    background-color: white;
     border: black 1px solid;
     box-sizing: border-box;
 }

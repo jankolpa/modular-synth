@@ -1,15 +1,7 @@
 "use strict";
 
 // create grid
-var items = [
-    { w: 2, h: 1, noResize: true, content: '<div class="module">my first widget</div>' },
-    { w: 4, h: 1, noResize: true, content: '<div class="module">another longer widget!</div>' },
-    { w: 2, h: 1, noResize: true, content: '<div class="module">another longer widget!</div>' },
-    { w: 3, h: 1, noResize: true, content: '<div class="module">another longer widget!</div>' }
-];
-
 var gridHeight = (document.body.offsetHeight - document.getElementById('top-bar').offsetHeight) / 2;
-
 document.getElementsByClassName('grid-stack')[0].style.width = '' + gridHeight * 6 + 'px';
 var grid = GridStack.init({
     cellHeight: gridHeight,
@@ -21,8 +13,6 @@ var grid = GridStack.init({
     disableOneColumnMode: true,
     animate: false
 });
-grid.load(items);
-console.log(grid);
 
 
 
@@ -104,8 +94,27 @@ addEventListener("resize", (event) => {
     style.innerHTML = '.grid-stack{ height: ' + 2 * gridHeight + 'px !important; min-height: ' + 2 * gridHeight + 'px !important; }' +
         '.grid-stack-item { height: ' + gridHeight + 'px !important; min-height: ' + gridHeight + 'px !important; }' +
         ' .grid-stack-item-content { min-height: ' + gridHeight + 'px !important; }' +
-        ' .grid-stack-item[gs-y="1"]:not(.ui-draggable-dragging) { top: ' + gridHeight + 'px !important; }' + 
+        ' .grid-stack-item[gs-y="1"]:not(.ui-draggable-dragging) { top: ' + gridHeight + 'px !important; }' +
         ' .module{zoom: ' + zoomfactor + '%;}';
 
     grid.opts.cellHeight = gridHeight;
 });
+
+
+
+
+// load moduleConfig.json 
+import consoleData from '../app/moduleConfig.json' assert { type: 'json' };
+loadModule(0);
+loadModule(1);
+
+function loadModule(index) {
+    let xhr = new XMLHttpRequest();
+    xhr.open("GET", '../app/html/' + consoleData.modules[index].name + '.html', false);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+            grid.addWidget({ w: consoleData.modules[index].width, h: 1, noResize: true, content: '<div class="module">' + xhr.responseText + '</div>' });
+        }
+    }.bind(this);
+    xhr.send();
+}
