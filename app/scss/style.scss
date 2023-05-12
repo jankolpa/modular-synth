@@ -51,3 +51,40 @@ $columns: 50;
         }
     }
 }
+
+$module-size-px: calc((100vh - $topBarHeight)) / 2;
+
+.module {
+    height: 100%;
+    position: relative;
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+        position: absolute;
+        margin: 0;
+        font-size: calc($module-size-px / 30);
+        transform: translate(-50%);
+        width: 100%;
+        text-align: center;
+    }
+
+    .input-knob {
+        position: absolute;
+        height: calc($module-size-px / 7)  !important;
+        width: calc($module-size-px / 7) !important;
+        transform: translate(-50%);
+
+        &:focus-visible {
+            outline: none;
+            border: none;
+        }
+    }
+
+    .input-slider {
+        position: absolute;
+        transform: translate(-50%);
+    }
+}

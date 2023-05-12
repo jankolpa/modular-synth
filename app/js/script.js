@@ -82,20 +82,17 @@ function stopScrollRight() {
 // on resize-event
 var style = document.createElement('style');
 var zoomfactor;
-zoomfactor = (gridHeight / 4).toFixed(2);
+zoomfactor = (gridHeight / 4).toFixed(2); // yet to use
 document.head.appendChild(style);
-style.innerHTML = '.module{zoom: ' + zoomfactor + '%;}';
 
 addEventListener("resize", (event) => {
     gridHeight = (document.body.offsetHeight - document.getElementById('top-bar').offsetHeight) / 2;
     document.getElementsByClassName('grid-stack')[0].style.width = '' + gridHeight * 6 + 'px';
-    zoomfactor = (gridHeight / 4).toFixed(2);
 
     style.innerHTML = '.grid-stack{ height: ' + 2 * gridHeight + 'px !important; min-height: ' + 2 * gridHeight + 'px !important; }' +
         '.grid-stack-item { height: ' + gridHeight + 'px !important; min-height: ' + gridHeight + 'px !important; }' +
         ' .grid-stack-item-content { min-height: ' + gridHeight + 'px !important; }' +
-        ' .grid-stack-item[gs-y="1"]:not(.ui-draggable-dragging) { top: ' + gridHeight + 'px !important; }' +
-        ' .module{zoom: ' + zoomfactor + '%;}';
+        ' .grid-stack-item[gs-y="1"]:not(.ui-draggable-dragging) { top: ' + gridHeight + 'px !important; }';
 
     grid.opts.cellHeight = gridHeight;
 });
@@ -106,6 +103,7 @@ addEventListener("resize", (event) => {
 // load moduleConfig.json 
 import consoleData from '../app/moduleConfig.json' assert { type: 'json' };
 loadModule(0);
+loadModule(1);
 loadModule(1);
 
 function loadModule(index) {
