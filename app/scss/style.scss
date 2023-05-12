@@ -83,6 +83,7 @@ $module-size-px: calc((100vh - $topBarHeight)) / 2;
         transform: translate(-50%);
         width: 100%;
         text-align: center;
+        cursor: default;
     }
 
     .input-knob {

@@ -99,13 +99,22 @@ addEventListener("resize", (event) => {
 
 
 
+// load modules
+var consoleData;
 
-// load moduleConfig.json 
-import consoleData from '../app/moduleConfig.json' assert { type: 'json' };
-loadModule(0);
-loadModule(1);
-loadModule(1);
-loadModule(0);
+var xhr = new XMLHttpRequest();
+xhr.overrideMimeType("application/json");
+xhr.open('GET', '../app/moduleConfig.json', true);
+xhr.onreadystatechange = function () {
+    if (xhr.readyState == 4 && xhr.status == "200") {
+        consoleData = JSON.parse(xhr.responseText);
+        loadModule(0);
+        loadModule(1);
+        loadModule(1);
+        loadModule(0);
+    }
+};
+xhr.send(null);
 
 function loadModule(index) {
     let xhr = new XMLHttpRequest();

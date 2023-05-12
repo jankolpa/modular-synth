@@ -4,7 +4,8 @@
   "description": "Entwicklung eines webbasierten modularen Synthesizers mit integrierter Modulentwicklung",
   "main": "app.js",
   "scripts": {
-    "watch": "gulp"
+    "watch": "gulp",
+    "deploy": "gulp deploy && gulp upload"
   },
   "repository": {
     "type": "git",
@@ -21,14 +22,18 @@
     "gulp-postcss": "^9.0.1",
     "gulp-sass": "^5.1.0",
     "gulp-terser": "^2.1.0",
+    "gutil": "^1.6.4",
     "postcss": "^8.4.23",
-    "sass": "^1.62.0"
+    "sass": "^1.62.0",
+    "vinyl-ftp": "^0.6.1"
   },
   "bugs": {
     "url": "https://github.com/jankolpa/modular-synth/issues"
   },
   "homepage": "https://github.com/jankolpa/modular-synth#readme",
   "devDependencies": {
-    "gulp": "^4.0.2"
+    "gulp": "^4.0.2",
+    "gulp-clean": "^0.4.0",
+    "yargs": "^17.7.2"
   }
 }
