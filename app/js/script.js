@@ -105,6 +105,7 @@ import consoleData from '../app/moduleConfig.json' assert { type: 'json' };
 loadModule(0);
 loadModule(1);
 loadModule(1);
+loadModule(0);
 
 function loadModule(index) {
     let xhr = new XMLHttpRequest();
