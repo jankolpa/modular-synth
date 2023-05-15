@@ -139,32 +139,31 @@ $module-size-px: calc((100vh - $topBarHeight)) / 2;
     height: 100%;
 
     pointer-events: none;
+    z-index: 101 !important;
 
     path {
         stroke-width: calc($module-size-px / 50);
+        opacity: 0.8;
 
         &.path-shadow {
-            opacity: 0.1;
+            opacity: 0.07;
         }
     }
 
     circle {
-        stroke-width: calc($module-size-px / 50);
+        stroke-width: calc($module-size-px / 30);
     }
 
     .path-color-1 {
-        stroke: #8ecae6;
+        stroke: #f6b849;
     }
     .path-color-2 {
-        stroke: #21bcaf;
+        stroke: #e4513f;
     }
     .path-color-3 {
-        stroke: #024747;
+        stroke: #4b6aba;
     }
     .path-color-4 {
-        stroke: #ffb703;
-    }
-    .path-color-5 {
-        stroke: #fb8500;
+        stroke: #7ddf92;
     }
 }

@@ -8,7 +8,7 @@ class Connection {
         var startX = this.startElem.getBoundingClientRect().left + window.scrollX + this.startElem.getBoundingClientRect().width / 2;
         var startY = this.startElem.getBoundingClientRect().top + window.scrollY + this.startElem.getBoundingClientRect().height / 2;
 
-        var colorArray = ['path-color-1', 'path-color-2', 'path-color-3', 'path-color-4', 'path-color-5'];
+        var colorArray = ['path-color-1', 'path-color-2', 'path-color-3', 'path-color-4'];
         var myColor = colorArray[Math.floor(Math.random() * colorArray.length)];;
 
         this.line = document.createElementNS('http://www.w3.org/2000/svg', 'path');

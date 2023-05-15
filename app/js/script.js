@@ -2,6 +2,7 @@
 
 var connectionList = [];
 var plugList = [];
+var mousePosX = 0, mousePosY = 0;
 
 // create grid
 var gridHeight = (document.body.offsetHeight - document.getElementById('top-bar').offsetHeight) / 2;
@@ -105,6 +106,8 @@ function loadModule(index) {
                                     connectionList[j].endElem = null;
                                     connectionList[j].rewriteLine();
                                 }
+
+                                connectionList[j].updateEndCords(mousePosX, mousePosY);
                                 return;
                             }
                         }
@@ -149,6 +152,9 @@ addEventListener("resize", (event) => {
 
 // on mouse move event
 addEventListener("mousemove", (event) => {
+
+    mousePosX = event.pageX;
+    mousePosY = event.pageY;
 
     // move modules
     if (isDragging) {
