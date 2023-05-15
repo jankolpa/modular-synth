@@ -146,6 +146,44 @@ $module-size-px: calc((100vh - $topBarHeight)) / 2;
             opacity: 0.8;
         }
     }
+
+    .plug[type="out"][selected="true"],
+    &[connect-to="out"] .plug[type="out"][hover="true"] {
+        filter: none;
+        opacity: 1;
+
+        &::after {
+            position: absolute;
+            top: -10%;
+            left: -10%;
+            width: 120%;
+            height: 120%;
+            content: '';
+            pointer-events: none;
+            border: rgba($color: #000000, $alpha: .2) calc($module-size-px / 70) solid;
+            border-radius: calc($module-size-px / 50);
+            box-sizing: border-box;
+        }
+    }
+
+    .plug[type="in"][selected="true"],
+    &[connect-to="in"] .plug[type="in"][hover="true"] {
+        filter: none;
+        opacity: 1;
+
+        &::after {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            content: '';
+            pointer-events: none;
+            border: rgba($color: #000000, $alpha: .2) calc($module-size-px / 70) solid;
+            box-sizing: border-box;
+            border-radius: 100%;
+        }
+    }
 }
 
 #line-canvas {

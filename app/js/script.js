@@ -93,40 +93,46 @@ function loadModule(index) {
 
                 plugs[i].addEventListener('mousedown', (e) => {
 
-                    var alreadyUsed = false;
-                    if (e.shiftKey === false || plugs[i].getAttribute('type') == 'in') {
-                        for (let j = connectionList.length - 1; j >= 0; j--) {
-                            if (connectionList[j].startElem === plugs[i] || connectionList[j].endElem === plugs[i]) {
-                                alreadyUsed = true;
+                    if (e.button === 0) {
 
-                                if (connectionList[j].endElem === plugs[i]) {
-                                    connectionList[j].endElem = null;
-                                } else {
-                                    connectionList[j].startElem = connectionList[j].endElem;
-                                    connectionList[j].endElem = null;
-                                    connectionList[j].rewriteLine();
+                        var alreadyUsed = false;
+                        if (e.shiftKey === false || plugs[i].getAttribute('type') == 'in') {
+                            for (let j = connectionList.length - 1; j >= 0; j--) {
+                                if (connectionList[j].startElem === plugs[i] || connectionList[j].endElem === plugs[i]) {
+                                    alreadyUsed = true;
+
+                                    if (connectionList[j].endElem === plugs[i]) {
+                                        connectionList[j].endElem = null;
+                                    } else {
+                                        connectionList[j].startElem = connectionList[j].endElem;
+                                        connectionList[j].endElem = null;
+                                        connectionList[j].rewriteLine();
+                                    }
+
+                                    connectionList[j].updateEndCords(mousePosX, mousePosY);
+
+                                    if (connectionList[j].startElem.getAttribute('type') == 'in') {
+                                        document.getElementsByClassName('grid-stack')[0].setAttribute('connect-to', 'out');
+                                    } else {
+                                        document.getElementsByClassName('grid-stack')[0].setAttribute('connect-to', 'in');
+                                    }
+
+                                    connectionList[j].startElem.setAttribute('selected', true);
+                                    return;
                                 }
-
-                                connectionList[j].updateEndCords(mousePosX, mousePosY);
-
-                                if (connectionList[j].startElem.getAttribute('type') == 'in') {
-                                    document.getElementsByClassName('grid-stack')[0].setAttribute('connect-to', 'out');
-                                } else {
-                                    document.getElementsByClassName('grid-stack')[0].setAttribute('connect-to', 'in');
-                                }
-
-                                return;
                             }
                         }
-                    }
 
-                    if (alreadyUsed === false) {
-                        connectionList.push(new Connection(canvas, plugs[i], null, 100, 100));
+                        if (alreadyUsed === false) {
+                            connectionList.push(new Connection(canvas, plugs[i], null, 100, 100));
 
-                        if (plugs[i].getAttribute('type') == 'in') {
-                            document.getElementsByClassName('grid-stack')[0].setAttribute('connect-to', 'out');
-                        } else {
-                            document.getElementsByClassName('grid-stack')[0].setAttribute('connect-to', 'in');
+                            if (plugs[i].getAttribute('type') == 'in') {
+                                document.getElementsByClassName('grid-stack')[0].setAttribute('connect-to', 'out');
+                            } else {
+                                document.getElementsByClassName('grid-stack')[0].setAttribute('connect-to', 'in');
+                            }
+
+                            plugs[i].setAttribute('selected', true);
                         }
                     }
                 });
@@ -166,6 +172,23 @@ addEventListener("resize", (event) => {
 // on mouse move event
 addEventListener("mousemove", (event) => {
 
+    var isHoldingCable = false;
+
+    for (let index = 0; index < connectionList.length; index++) {
+        if (connectionList[index].endElem === null) {
+            isHoldingCable = true;
+            plugList.forEach(plug => {
+                var box = plug.getBoundingClientRect();
+                if (event.pageX > box.left + window.scrollX && event.pageX < box.left + window.scrollX + box.width
+                    && event.pageY > box.top + window.scrollY && event.pageY < box.top + window.scrollY + box.height) {
+                    plug.setAttribute('hover', true);
+                } else {
+                    plug.setAttribute('hover', false);
+                }
+            });
+        }
+    }
+    
     mousePosX = event.pageX;
     mousePosY = event.pageY;
 
@@ -214,68 +237,71 @@ addEventListener("mousemove", (event) => {
 
 addEventListener("mouseup", (event) => {
 
-    var hitPlug = false;
-    for (let index = 0; index < connectionList.length; index++) {
-        if (connectionList[index].endElem === null) {
-
-            document.getElementsByClassName('grid-stack')[0].setAttribute('connect-to', '');
-
-            plugList.forEach(plug => {
-                var box = plug.getBoundingClientRect();
-
-                if (event.pageX > box.left + window.scrollX && event.pageX < box.left + window.scrollX + box.width
-                    && event.pageY > box.top + window.scrollY && event.pageY < box.top + window.scrollY + box.height) {
-
-                    if (connectionList[index].startElem === plug) {
-                        return;
-                    }
-
-                    var existsAlready = false;
-                    connectionList.forEach(conn => {
-                        if (conn.startElem === connectionList[index].startElem && conn.endElem === plug
-                            || conn.startElem === plug && conn.endElem === connectionList[index].startElem)
-                            existsAlready = true;
-                    });
-                    if (existsAlready) {
-                        return;
-                    }
-
-                    if (connectionList[index].startElem.getAttribute('type') === plug.getAttribute('type')) {
-                        return;
-                    }
-
-                    connectionList[index].endElem = plug;
-                    connectionList[index].updateEnd();
-
-                    if (plug.getAttribute('type') == 'in') {
-                        var removeIndex = -1;
-                        for (let i = 0; i < connectionList.length; i++) {
-                            if ((connectionList[i].endElem === plug || connectionList[i].startElem === plug) && i !== index) {
-                                connectionList[i].removeLine();
-                                removeIndex = i;
-                            }
-                        }
-                        if (removeIndex !== -1) {
-                            connectionList.splice(removeIndex, 1);
-                            console.log('delete!');
-                        }
-                    }
-
-                }
-            });
-        }
-    }
-
-    if (hitPlug === false) {
-        var removeIndex = -1;
+    if (event.button === 0) {
+        var hitPlug = false;
         for (let index = 0; index < connectionList.length; index++) {
             if (connectionList[index].endElem === null) {
-                connectionList[index].removeLine();
-                removeIndex = index;
+
+                document.getElementsByClassName('grid-stack')[0].setAttribute('connect-to', '');
+                plugList.forEach(plug => {
+
+                    plug.setAttribute('selected', false);
+                    var box = plug.getBoundingClientRect();
+
+                    if (event.pageX > box.left + window.scrollX && event.pageX < box.left + window.scrollX + box.width
+                        && event.pageY > box.top + window.scrollY && event.pageY < box.top + window.scrollY + box.height) {
+
+                        if (connectionList[index].startElem === plug) {
+                            return;
+                        }
+
+                        var existsAlready = false;
+                        connectionList.forEach(conn => {
+                            if (conn.startElem === connectionList[index].startElem && conn.endElem === plug
+                                || conn.startElem === plug && conn.endElem === connectionList[index].startElem)
+                                existsAlready = true;
+                        });
+                        if (existsAlready) {
+                            return;
+                        }
+
+                        if (connectionList[index].startElem.getAttribute('type') === plug.getAttribute('type')) {
+                            return;
+                        }
+
+                        connectionList[index].endElem = plug;
+                        connectionList[index].updateEnd();
+
+                        if (plug.getAttribute('type') == 'in') {
+                            var removeIndex = -1;
+                            for (let i = 0; i < connectionList.length; i++) {
+                                if ((connectionList[i].endElem === plug || connectionList[i].startElem === plug) && i !== index) {
+                                    connectionList[i].removeLine();
+                                    removeIndex = i;
+                                }
+                            }
+                            if (removeIndex !== -1) {
+                                connectionList.splice(removeIndex, 1);
+                                console.log('delete!');
+                            }
+                        }
+
+                    }
+                });
             }
         }
-        if (removeIndex !== -1) {
-            connectionList.splice(removeIndex, 1);
+
+        if (hitPlug === false) {
+            var removeIndex = -1;
+            for (let index = 0; index < connectionList.length; index++) {
+                if (connectionList[index].endElem === null) {
+                    connectionList[index].removeLine();
+                    removeIndex = index;
+                }
+            }
+            if (removeIndex !== -1) {
+                connectionList.splice(removeIndex, 1);
+            }
         }
     }
 });
