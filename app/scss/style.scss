@@ -131,6 +131,23 @@ $module-size-px: calc((100vh - $topBarHeight)) / 2;
     }
 }
 
+.grid-stack {
+
+    &[connect-to="in"] {
+        .plug[type="out"] {
+            filter: contrast(30%);
+            opacity: 0.8;
+        }
+    }
+
+    &[connect-to="out"] {
+        .plug[type="in"] {
+            filter: contrast(30%);
+            opacity: 0.8;
+        }
+    }
+}
+
 #line-canvas {
     position: absolute;
     top: 0;
@@ -157,12 +174,15 @@ $module-size-px: calc((100vh - $topBarHeight)) / 2;
     .path-color-1 {
         stroke: #f6b849;
     }
+
     .path-color-2 {
         stroke: #e4513f;
     }
+
     .path-color-3 {
         stroke: #4b6aba;
     }
+
     .path-color-4 {
         stroke: #7ddf92;
     }

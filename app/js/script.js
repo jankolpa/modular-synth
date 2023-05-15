@@ -92,13 +92,13 @@ function loadModule(index) {
 
 
                 plugs[i].addEventListener('mousedown', (e) => {
-                    
+
                     var alreadyUsed = false;
-                    if(e.shiftKey === false) {
+                    if (e.shiftKey === false || plugs[i].getAttribute('type') == 'in') {
                         for (let j = connectionList.length - 1; j >= 0; j--) {
                             if (connectionList[j].startElem === plugs[i] || connectionList[j].endElem === plugs[i]) {
                                 alreadyUsed = true;
-    
+
                                 if (connectionList[j].endElem === plugs[i]) {
                                     connectionList[j].endElem = null;
                                 } else {
@@ -108,6 +108,13 @@ function loadModule(index) {
                                 }
 
                                 connectionList[j].updateEndCords(mousePosX, mousePosY);
+
+                                if (connectionList[j].startElem.getAttribute('type') == 'in') {
+                                    document.getElementsByClassName('grid-stack')[0].setAttribute('connect-to', 'out');
+                                } else {
+                                    document.getElementsByClassName('grid-stack')[0].setAttribute('connect-to', 'in');
+                                }
+
                                 return;
                             }
                         }
@@ -115,6 +122,12 @@ function loadModule(index) {
 
                     if (alreadyUsed === false) {
                         connectionList.push(new Connection(canvas, plugs[i], null, 100, 100));
+
+                        if (plugs[i].getAttribute('type') == 'in') {
+                            document.getElementsByClassName('grid-stack')[0].setAttribute('connect-to', 'out');
+                        } else {
+                            document.getElementsByClassName('grid-stack')[0].setAttribute('connect-to', 'in');
+                        }
                     }
                 });
                 plugList.push(plugs[i]);
@@ -205,6 +218,8 @@ addEventListener("mouseup", (event) => {
     for (let index = 0; index < connectionList.length; index++) {
         if (connectionList[index].endElem === null) {
 
+            document.getElementsByClassName('grid-stack')[0].setAttribute('connect-to', '');
+
             plugList.forEach(plug => {
                 var box = plug.getBoundingClientRect();
 
@@ -231,6 +246,21 @@ addEventListener("mouseup", (event) => {
 
                     connectionList[index].endElem = plug;
                     connectionList[index].updateEnd();
+
+                    if (plug.getAttribute('type') == 'in') {
+                        var removeIndex = -1;
+                        for (let i = 0; i < connectionList.length; i++) {
+                            if ((connectionList[i].endElem === plug || connectionList[i].startElem === plug) && i !== index) {
+                                connectionList[i].removeLine();
+                                removeIndex = i;
+                            }
+                        }
+                        if (removeIndex !== -1) {
+                            connectionList.splice(removeIndex, 1);
+                            console.log('delete!');
+                        }
+                    }
+
                 }
             });
         }
