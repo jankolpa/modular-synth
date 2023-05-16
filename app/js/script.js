@@ -86,7 +86,7 @@ function loadModule (index) {
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
       const newWidget = grid.addWidget({ w: consoleData.modules[index].width, h: 1, noResize: true, content: '<div class="module">' + xhr.responseText + '</div>' })
-      const plugs = newWidget.getElementsByClassName('plug')
+      const plugs = newWidget.getElementsByClassName('plug-button')
       for (let i = 0; i < plugs.length; i++) {
         plugs[i].addEventListener('mousedown', (e) => {
           if (e.button === 0) {
@@ -259,7 +259,6 @@ addEventListener('mouseup', (event) => {
               }
               if (removeIndex !== -1) {
                 connectionList.splice(removeIndex, 1)
-                console.log('delete!')
               }
             }
           }
