@@ -74,8 +74,8 @@ xhr.onreadystatechange = function () {
     consoleData = JSON.parse(xhr.responseText)
     loadModule(0)
     loadModule(1)
-    loadModule(1)
     loadModule(0)
+    loadModule(1)
   }
 }
 xhr.send(null)

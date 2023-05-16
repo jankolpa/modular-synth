@@ -1,3 +1,4 @@
+/* stylelint-disable no-descending-specificity */
 $top-bar-height: 45px;
 $scroll-bar-height: 28px;
 $module-size-px: calc((100vh - $top-bar-height) / 2);
@@ -74,6 +75,11 @@ body {
             border-radius: 100%;
         }
     }
+
+    .plug-adjust .plug-button[type="in"][selected="true"]::after,
+    &[connect-to="in"] .plug-adjust .plug-button[type="in"][hover="true"]::after {
+        top: calc(($module-size-px / 11) - ($module-size-px * 0.007)) !important;
+    }
 }
 
 .grid-stack-item-content {
@@ -120,7 +126,6 @@ $columns: 50;
     height: 100%;
     position: relative;
 
-    /* stylelint-disable-next-line no-descending-specificity */
     h1,
     h2,
     h3,
@@ -187,12 +192,76 @@ $columns: 50;
                 border: none;
             }
     
-            /* stylelint-disable-next-line no-descending-specificity */
             &[type="in"] {
                 border-radius: 100%;
             }
     
-            /* stylelint-disable-next-line no-descending-specificity */
+            &[type="out"] {
+                background-color: rgba($color: #222, $alpha: 70%);
+                border-radius: calc($module-size-px / 60);
+                margin-bottom: 9%;
+            }
+        }
+
+        a {
+            text-align: center;
+            font-size: calc($module-size-px / 40);
+            pointer-events: none;
+            opacity: 0.75;
+            font-weight: bold;
+        }
+    }
+
+    .plug-adjust {
+        position: absolute;
+        transform: translate(-50%);
+        display: inline-grid;
+        width: calc($module-size-px / 11);
+
+        .input-knob {
+            height: calc($module-size-px / 11) !important;
+            width: calc($module-size-px / 11) !important;
+            margin-left: 1%;
+            border-radius: 100%;
+            margin-bottom: -13%;
+
+            &:focus-visible {
+                outline: none;
+                border: none;
+            }
+
+            &::after {
+                position: absolute;
+                content: '';
+                top: 40%;
+                left: 50%;
+                width: calc($module-size-px / 200);
+                opacity: 0.65;
+                height: calc($module-size-px / 50);
+                background-color: black;
+                transform: translate(-50%);
+                z-index: 0;
+            }
+        }
+
+        .plug-button {
+            width: calc($module-size-px / 11);
+            height: calc($module-size-px / 11);
+            background: none;
+            border: none;
+            background-image: url('../assets/plug_1.png');
+            background-size: contain;
+            z-index: 1;
+    
+            &:focus-visible {
+                outline: none;
+                border: none;
+            }
+    
+            &[type="in"] {
+                border-radius: 100%;
+            }
+    
             &[type="out"] {
                 background-color: rgba($color: #222, $alpha: 90%);
                 border-radius: calc($module-size-px / 60);
