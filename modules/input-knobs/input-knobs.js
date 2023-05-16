@@ -290,7 +290,9 @@ input[type=checkbox].input-switch:checked,input[type=radio].input-switch:checked
             difFaktor = 22
           }
 
-          el.style.backgroundPosition = '0px ' + (-((v * ik.sprites) | 0) * ((document.body.offsetHeight - document.getElementById('top-bar').offsetHeight + 28) / difFaktor)) + 'px' // HERE!
+          // temporary
+          const scrollFaktor = (document.body.offsetHeight - 800) / (1070 - 800)
+          el.style.backgroundPosition = '0px ' + (-((v * ik.sprites) | 0) * ((document.body.offsetHeight - document.getElementById('top-bar').offsetHeight + 28) / difFaktor)) * (0.9995 * scrollFaktor + 1 * (1 - scrollFaktor)) + 'px' // HERE!
         } else {
           switch (ik.itype) {
             case 'k':

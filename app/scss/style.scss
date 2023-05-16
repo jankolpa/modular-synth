@@ -51,8 +51,8 @@ body {
             height: calc(($module-size-px / 11) * 1.2);
             content: '';
             pointer-events: none;
-            border: rgba($color: #000, $alpha: 20%) calc($module-size-px / 70) solid;
-            border-radius: calc($module-size-px / 50);
+            border: rgba($color: #000, $alpha: 15%) calc($module-size-px / 90) solid;
+            border-radius: calc($module-size-px / 30);
             box-sizing: border-box;
         }
     }
@@ -70,7 +70,7 @@ body {
             height: calc($module-size-px / 11);
             content: '';
             pointer-events: none;
-            border: rgba($color: #000, $alpha: 20%) calc($module-size-px / 70) solid;
+            border: rgba($color: #000, $alpha: 15%) calc($module-size-px / 70) solid;
             box-sizing: border-box;
             border-radius: 100%;
         }
@@ -198,7 +198,7 @@ $columns: 50;
     
             &[type="out"] {
                 background-color: rgba($color: #222, $alpha: 70%);
-                border-radius: calc($module-size-px / 60);
+                border-radius: calc($module-size-px / 40);
                 margin-bottom: 9%;
             }
         }
@@ -224,6 +224,7 @@ $columns: 50;
             margin-left: 1%;
             border-radius: 100%;
             margin-bottom: -13%;
+            z-index: 1;
 
             &:focus-visible {
                 outline: none;
@@ -233,11 +234,11 @@ $columns: 50;
             &::after {
                 position: absolute;
                 content: '';
-                top: 40%;
+                top: 35%;
                 left: 50%;
                 width: calc($module-size-px / 200);
-                opacity: 0.65;
-                height: calc($module-size-px / 50);
+                opacity: 0.5;
+                height: calc($module-size-px / 40);
                 background-color: black;
                 transform: translate(-50%);
                 z-index: 0;
