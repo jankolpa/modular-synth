@@ -60,8 +60,8 @@ class Connection {
     const startX = this.startElem.getBoundingClientRect().left + window.scrollX + this.startElem.getBoundingClientRect().width / 2
     const startY = this.startElem.getBoundingClientRect().top + window.scrollY + this.startElem.getBoundingClientRect().height / 2
 
-    const endX = this.endElem.getBoundingClientRect().left + window.scrollX + this.startElem.getBoundingClientRect().width / 2
-    const endY = this.endElem.getBoundingClientRect().top + window.scrollY + this.startElem.getBoundingClientRect().height / 2
+    const endX = this.endElem.getBoundingClientRect().left + window.scrollX + this.endElem.getBoundingClientRect().width / 2
+    const endY = this.endElem.getBoundingClientRect().top + window.scrollY + this.endElem.getBoundingClientRect().height / 2
 
     const length = Math.round(Math.sqrt((startX - endX) * (startX - endX) + (startY - endY) * (startY - endY)))
     this.line.setAttribute('d', 'M ' + startX + ' ' + startY + ' q ' + (endX - startX) / 2 + ' ' + ((endY - startY) / 2 + length / 4) + ' ' + (endX - startX) + ' ' + (endY - startY))
@@ -79,18 +79,15 @@ class Connection {
     const startX = parseInt(stringArray[2])
     const startY = parseInt(stringArray[4])
 
-    const endX = this.endElem.getBoundingClientRect().left + window.scrollX + this.startElem.getBoundingClientRect().width / 2
-    const endY = this.endElem.getBoundingClientRect().top + window.scrollY + this.startElem.getBoundingClientRect().height / 2
+    const endX = this.endElem.getBoundingClientRect().left + window.scrollX + this.endElem.getBoundingClientRect().width / 2
+    const endY = this.endElem.getBoundingClientRect().top + window.scrollY + this.endElem.getBoundingClientRect().height / 2
 
     const length = Math.round(Math.sqrt((startX - endX) * (startX - endX) + (startY - endY) * (startY - endY)))
     this.line.setAttribute('d', 'M ' + startX + ' ' + startY + ' q ' + (endX - startX) / 2 + ' ' + ((endY - startY) / 2 + length / 4) + ' ' + (endX - startX) + ' ' + (endY - startY))
     this.lineShadow.setAttribute('d', 'M ' + startX + ' ' + startY + ' q ' + (endX - startX) / 2 + ' ' + ((endY - startY) / 2 + length / 3) + ' ' + (endX - startX) + ' ' + (endY - startY))
 
-    this.startCircle.setAttribute('cx', startX)
-    this.startCircle.setAttribute('cy', startY)
-
-    this.startCircle.setAttribute('cx', endX)
-    this.startCircle.setAttribute('cy', endY)
+    this.endCircle.setAttribute('cx', endX)
+    this.endCircle.setAttribute('cy', endY)
   }
 
   updateEndCords (endX, endY) {
@@ -102,11 +99,8 @@ class Connection {
     this.line.setAttribute('d', 'M ' + startX + ' ' + startY + ' q ' + (endX - startX) / 2 + ' ' + ((endY - startY) / 2 + length / 4) + ' ' + (endX - startX) + ' ' + (endY - startY))
     this.lineShadow.setAttribute('d', 'M ' + startX + ' ' + startY + ' q ' + (endX - startX) / 2 + ' ' + ((endY - startY) / 2 + length / 3) + ' ' + (endX - startX) + ' ' + (endY - startY))
 
-    this.startCircle.setAttribute('cx', startX)
-    this.startCircle.setAttribute('cy', startY)
-
-    this.startCircle.setAttribute('cx', endX)
-    this.startCircle.setAttribute('cy', endY)
+    this.endCircle.setAttribute('cx', endX)
+    this.endCircle.setAttribute('cy', endY)
   }
 
   removeLine () {

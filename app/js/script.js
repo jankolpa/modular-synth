@@ -120,7 +120,7 @@ function loadModule (index) {
 
             if (alreadyUsed === false) {
               // eslint-disable-next-line no-undef
-              connectionList.push(new Connection(canvas, plugs[i], null, 100, 100))
+              connectionList.push(new Connection(canvas, plugs[i], null))
 
               if (plugs[i].getAttribute('type') === 'in') {
                 document.getElementsByClassName('grid-stack')[0].setAttribute('connect-to', 'out')
@@ -247,7 +247,7 @@ addEventListener('mouseup', (event) => {
             }
 
             connectionList[index].endElem = plug
-            connectionList[index].updateEnd()
+            connectionList[index].update()
 
             if (plug.getAttribute('type') === 'in') {
               let removeIndex = -1

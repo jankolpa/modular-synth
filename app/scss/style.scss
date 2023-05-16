@@ -1,6 +1,6 @@
 $top-bar-height: 45px;
 $scroll-bar-height: 28px;
-$module-size-px: calc((100vh - $top-bar-height)) / 2;
+$module-size-px: calc((100vh - $top-bar-height) / 2);
 
 body {
     font-family: Arial, Helvetica, sans-serif;
@@ -236,7 +236,24 @@ $columns: 50;
     }
 
     circle {
-        stroke-width: calc($module-size-px / 30);
+        stroke-width: 0;
+        r: calc($module-size-px / 55);
+
+        &.path-color-1 {
+            fill: #f6b849;
+        }
+    
+        &.path-color-2 {
+            fill: #e4513f;
+        }
+    
+        &.path-color-3 {
+            fill: #4b6aba;
+        }
+    
+        &.path-color-4 {
+            fill: #7ddf92;
+        }
     }
 
     .path-color-1 {
