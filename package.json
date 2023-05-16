@@ -32,8 +32,16 @@
   },
   "homepage": "https://github.com/jankolpa/modular-synth#readme",
   "devDependencies": {
+    "eslint": "^8.40.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-n": "^15.7.0",
+    "eslint-plugin-promise": "^6.1.1",
     "gulp": "^4.0.2",
     "gulp-clean": "^0.4.0",
+    "stylelint": "^15.6.1",
+    "stylelint-config-standard": "^33.0.0",
+    "stylelint-config-standard-scss": "^9.0.0",
     "yargs": "^17.7.2"
   }
 }
