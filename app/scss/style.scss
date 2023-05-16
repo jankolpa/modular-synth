@@ -237,38 +237,42 @@ $columns: 50;
 
     circle {
         stroke-width: 0;
-        r: calc($module-size-px / 55);
+        r: calc($module-size-px / 45);
 
-        &.path-color-1 {
+        &.path-color-0 {
             fill: #f6b849;
         }
     
-        &.path-color-2 {
+        &.path-color-1 {
             fill: #e4513f;
         }
     
-        &.path-color-3 {
+        &.path-color-2 {
             fill: #4b6aba;
         }
     
-        &.path-color-4 {
+        &.path-color-3 {
             fill: #7ddf92;
+        }
+
+        &.dot {
+            r: calc($module-size-px / 80);
         }
     }
 
-    .path-color-1 {
+    .path-color-0 {
         stroke: #f6b849;
     }
 
-    .path-color-2 {
+    .path-color-1 {
         stroke: #e4513f;
     }
 
-    .path-color-3 {
+    .path-color-2 {
         stroke: #4b6aba;
     }
 
-    .path-color-4 {
+    .path-color-3 {
         stroke: #7ddf92;
     }
 }

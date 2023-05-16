@@ -1,5 +1,8 @@
 'use strict'
 
+let colorCounter = 0
+const nrOfColors = 4
+
 // eslint-disable-next-line no-unused-vars
 class Connection {
   constructor (canvas, startElem, endElem) {
@@ -9,8 +12,9 @@ class Connection {
     const startX = this.startElem.getBoundingClientRect().left + window.scrollX + this.startElem.getBoundingClientRect().width / 2
     const startY = this.startElem.getBoundingClientRect().top + window.scrollY + this.startElem.getBoundingClientRect().height / 2
 
-    const colorArray = ['path-color-1', 'path-color-2', 'path-color-3', 'path-color-4']
-    const myColor = colorArray[Math.floor(Math.random() * colorArray.length)]
+    const myColor = 'path-color-' + colorCounter
+    colorCounter++
+    colorCounter = colorCounter % nrOfColors
 
     this.line = document.createElementNS('http://www.w3.org/2000/svg', 'path')
     this.line.setAttribute('d', 'M ' + startX + ' ' + startY + ' ' + startX + ' ' + startY)
@@ -26,21 +30,29 @@ class Connection {
     this.startCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
     this.startCircle.setAttribute('cx', startX)
     this.startCircle.setAttribute('cy', startY)
-    this.startCircle.setAttribute('r', '1')
-    this.startCircle.setAttribute('fill', 'none')
     this.startCircle.classList.add(myColor)
 
     this.endCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
     this.endCircle.setAttribute('cx', startX)
     this.endCircle.setAttribute('cy', startY)
-    this.endCircle.setAttribute('r', '1')
-    this.endCircle.setAttribute('fill', 'none')
     this.endCircle.classList.add(myColor)
+
+    this.startCircleDot = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
+    this.startCircleDot.setAttribute('cx', startX)
+    this.startCircleDot.setAttribute('cy', startY)
+    this.startCircleDot.classList.add('dot')
+
+    this.endCircleDot = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
+    this.endCircleDot.setAttribute('cx', startX)
+    this.endCircleDot.setAttribute('cy', startY)
+    this.endCircleDot.classList.add('dot')
 
     canvas.appendChild(this.lineShadow)
     canvas.appendChild(this.line)
     canvas.appendChild(this.startCircle)
     canvas.appendChild(this.endCircle)
+    canvas.appendChild(this.startCircleDot)
+    canvas.appendChild(this.endCircleDot)
   }
 
   rewriteLine () {
@@ -54,6 +66,12 @@ class Connection {
 
     this.endCircle.setAttribute('cx', startX)
     this.endCircle.setAttribute('cy', startY)
+
+    this.startCircleDot.setAttribute('cx', startX)
+    this.startCircleDot.setAttribute('cy', startY)
+
+    this.endCircleDot.setAttribute('cx', startX)
+    this.endCircleDot.setAttribute('cy', startY)
   }
 
   update () {
@@ -72,6 +90,12 @@ class Connection {
 
     this.endCircle.setAttribute('cx', endX)
     this.endCircle.setAttribute('cy', endY)
+
+    this.startCircleDot.setAttribute('cx', startX)
+    this.startCircleDot.setAttribute('cy', startY)
+
+    this.endCircleDot.setAttribute('cx', endX)
+    this.endCircleDot.setAttribute('cy', endY)
   }
 
   updateEnd () {
@@ -88,6 +112,9 @@ class Connection {
 
     this.endCircle.setAttribute('cx', endX)
     this.endCircle.setAttribute('cy', endY)
+
+    this.endCircleDot.setAttribute('cx', endX)
+    this.endCircleDot.setAttribute('cy', endY)
   }
 
   updateEndCords (endX, endY) {
@@ -101,6 +128,9 @@ class Connection {
 
     this.endCircle.setAttribute('cx', endX)
     this.endCircle.setAttribute('cy', endY)
+
+    this.endCircleDot.setAttribute('cx', endX)
+    this.endCircleDot.setAttribute('cy', endY)
   }
 
   removeLine () {
@@ -108,5 +138,7 @@ class Connection {
     this.lineShadow.remove()
     this.startCircle.remove()
     this.endCircle.remove()
+    this.startCircleDot.remove()
+    this.endCircleDot.remove()
   }
 }
