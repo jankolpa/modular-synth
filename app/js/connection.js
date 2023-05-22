@@ -3,9 +3,6 @@
 // eslint-disable-next-line no-unused-vars
 export default class Connection {
   constructor (canvas, startElem, endElem, startModule, startOutput) {
-    console.log(startModule)
-    console.log(startOutput)
-
     this.startModule = startModule
     this.startOutput = startOutput
     this.endModule = null

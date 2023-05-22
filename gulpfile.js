@@ -12,7 +12,7 @@ const argv = require('yargs').argv
 
 // Sass Task
 function scssTask () {
-  return src('app/scss/style.scss', { sourcemaps: true })
+  return src('app/scss/style.scss', { sourcemaps: false })
     .pipe(sass())
     .pipe(postcss([cssnano()]))
     .pipe(dest('dist', { sourcemaps: '.' }))
@@ -20,7 +20,7 @@ function scssTask () {
 
 // JavaScript Task
 function jsTask () {
-  return src('app/js/**/*.js', { sourcemaps: true })
+  return src('app/js/**/*.js', { sourcemaps: false })
     .pipe(terser())
     .pipe(dest('dist', { sourcemaps: '.' }))
 }
@@ -57,9 +57,8 @@ function cleanFiles (cb) {
 function copy (cb) {
   src('index.html', { sourcemaps: false })
     .pipe(dest('deploy', { sourcemaps: '.' }))
-  src('dist/*.*', { sourcemaps: false })
-    .pipe(dest('deploy/dist', { sourcemaps: '.' }))
-  src(['modules/**/*']).pipe(gulp.dest('deploy/modules'))
+  src(['dist/**/*']).pipe(gulp.dest('deploy/dist'))
+  src(['libs/**/*']).pipe(gulp.dest('deploy/libs'))
   src(['assets/**/*']).pipe(gulp.dest('deploy/assets'))
 
   src(['app/**/*']).pipe(gulp.dest('deploy/app'))
@@ -107,8 +106,9 @@ exports.default = series(
   watchTask
 )
 
+exports.clean = cleanFiles
+
 exports.deploy = series(
-  cleanFiles,
   scssTask,
   jsTask,
   copy

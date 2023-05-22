@@ -9,6 +9,7 @@ let mousePosX = 0
 let mousePosY = 0
 
 const audioContext = new (window.AudioContext || window.webkitAudioContext)()
+let audioContextAllowed = false
 const moduleArray = new Map()
 let moduleIDCounter = 0
 
@@ -254,6 +255,11 @@ addEventListener('mousemove', (event) => {
 })
 
 addEventListener('mouseup', (event) => {
+  if (audioContextAllowed === false) {
+    audioContext.resume()
+    audioContextAllowed = true
+  }
+
   if (event.button === 0) {
     const hitPlug = false
     for (let index = 0; index < connectionList.length; index++) {
@@ -306,7 +312,6 @@ addEventListener('mouseup', (event) => {
                 connectionList.splice(removeIndex, 1)
               }
             }
-            console.log(connectionList)
           }
         })
       }
