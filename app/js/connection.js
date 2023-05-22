@@ -1,20 +1,23 @@
 'use strict'
 
-let colorCounter = 0
-const nrOfColors = 4
-
 // eslint-disable-next-line no-unused-vars
-class Connection {
-  constructor (canvas, startElem, endElem) {
+export default class Connection {
+  constructor (canvas, startElem, endElem, startModule, startOutput) {
+    console.log(startModule)
+    console.log(startOutput)
+
+    this.startModule = startModule
+    this.startOutput = startOutput
+    this.endModule = null
+    this.endInput = null
+
     this.startElem = startElem
     this.endElem = endElem
 
     const startX = this.startElem.getBoundingClientRect().left + window.scrollX + this.startElem.getBoundingClientRect().width / 2
     const startY = this.startElem.getBoundingClientRect().top + window.scrollY + this.startElem.getBoundingClientRect().height / 2
 
-    const myColor = 'path-color-' + colorCounter
-    colorCounter++
-    colorCounter = colorCounter % nrOfColors
+    const myColor = 'path-color-' + 1
 
     this.line = document.createElementNS('http://www.w3.org/2000/svg', 'path')
     this.line.setAttribute('d', 'M ' + startX + ' ' + startY + ' ' + startX + ' ' + startY)
@@ -140,5 +143,25 @@ class Connection {
     this.endCircle.remove()
     this.startCircleDot.remove()
     this.endCircleDot.remove()
+  }
+
+  connectModules () {
+    if (this.startElem.getAttribute('type') === 'out') {
+      this.startModule.connectOutput(this.endModule, this.startOutput, this.endInput)
+      this.endModule.connectInput(this.endInput)
+    } else {
+      this.endModule.connectOutput(this.startModule, this.endInput, this.startOutput)
+      this.startModule.connectInput(this.startOutput)
+    }
+  }
+
+  disconnectModules () {
+    if (this.startElem.getAttribute('type') === 'out') {
+      this.endModule.disconnectInput(this.endInput)
+      this.startModule.disconnectOutput(this.endModule, this.startOutput, this.endInput)
+    } else {
+      this.startModule.disconnectInput(this.startOutput)
+      this.endModule.disconnectOutput(this.startModule, this.endInput, this.startOutput)
+    }
   }
 }

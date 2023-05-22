@@ -1,9 +1,16 @@
 'use strict'
+import Connection from '../dist/connection.js'
+import VcoModule from '../dist/modules/vcoModule.js'
+import AudioModule from '../dist/modules/audioModule.js'
 
 const connectionList = []
 const plugList = []
 let mousePosX = 0
 let mousePosY = 0
+
+const audioContext = new (window.AudioContext || window.webkitAudioContext)()
+const moduleArray = new Map()
+let moduleIDCounter = 0
 
 // create grid
 let gridHeight = (document.body.offsetHeight - document.getElementById('top-bar').offsetHeight) / 2
@@ -62,6 +69,16 @@ function stopScrollRight () {
 const canvas = document.getElementById('line-canvas')
 canvas.style.width = document.getElementsByClassName('grid-stack')[0].style.width
 
+function getPlugIDfromPlug (plug) {
+  let plugID = -1
+  plug.classList.forEach(element => {
+    if (element.startsWith('index')) {
+      plugID = parseInt(element.charAt(6))
+    }
+  })
+  return plugID
+}
+
 // load modules
 let consoleData
 
@@ -75,7 +92,6 @@ xhr.onreadystatechange = function () {
     loadModule(0)
     loadModule(1)
     loadModule(0)
-    loadModule(1)
   }
 }
 xhr.send(null)
@@ -86,6 +102,20 @@ function loadModule (index) {
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
       const newWidget = grid.addWidget({ w: consoleData.modules[index].width, h: 1, noResize: true, content: '<div class="module">' + xhr.responseText + '</div>' })
+
+      // create module
+      let thisModule = null
+      const currentModuleID = '' + moduleIDCounter + '-' + consoleData.modules[index].name
+      const moduleElement = newWidget.getElementsByClassName('module')[0]
+      if (consoleData.modules[index].module === 'VcoModule') {
+        thisModule = new VcoModule(audioContext, moduleElement)
+      } else if (consoleData.modules[index].module === 'AudioModule') {
+        thisModule = new AudioModule(audioContext, moduleElement)
+      }
+      moduleArray.set(currentModuleID, thisModule)
+      moduleIDCounter++
+
+      // add functionality to plugs
       const plugs = newWidget.getElementsByClassName('plug-button')
       for (let i = 0; i < plugs.length; i++) {
         plugs[i].addEventListener('mousedown', (e) => {
@@ -95,12 +125,19 @@ function loadModule (index) {
               for (let j = connectionList.length - 1; j >= 0; j--) {
                 if (connectionList[j].startElem === plugs[i] || connectionList[j].endElem === plugs[i]) {
                   alreadyUsed = true
+                  connectionList[j].disconnectModules()
 
                   if (connectionList[j].endElem === plugs[i]) {
                     connectionList[j].endElem = null
+                    connectionList[j].endModule = null
+                    connectionList[j].endInput = null
                   } else {
                     connectionList[j].startElem = connectionList[j].endElem
+                    connectionList[j].startModule = connectionList[j].endModule
+                    connectionList[j].startOutput = connectionList[j].endInput
                     connectionList[j].endElem = null
+                    connectionList[j].endModule = null
+                    connectionList[j].endInput = null
                     connectionList[j].rewriteLine()
                   }
 
@@ -119,8 +156,7 @@ function loadModule (index) {
             }
 
             if (alreadyUsed === false) {
-              // eslint-disable-next-line no-undef
-              connectionList.push(new Connection(canvas, plugs[i], null))
+              connectionList.push(new Connection(canvas, plugs[i], null, thisModule, getPlugIDfromPlug(plugs[i])))
 
               if (plugs[i].getAttribute('type') === 'in') {
                 document.getElementsByClassName('grid-stack')[0].setAttribute('connect-to', 'out')
@@ -139,7 +175,7 @@ function loadModule (index) {
   xhr.send()
 }
 
-// on resize-event
+// --- EVENTS ------------------------------------------------------------------------------------------------
 const style = document.createElement('style')
 document.head.appendChild(style)
 
@@ -246,13 +282,22 @@ addEventListener('mouseup', (event) => {
               return
             }
 
+            // New Connection-Endpoint
             connectionList[index].endElem = plug
             connectionList[index].update()
+            moduleArray.forEach(module => {
+              if (module.moduleElement === plug.parentElement.parentElement) {
+                connectionList[index].endModule = module
+              }
+            })
+            connectionList[index].endInput = getPlugIDfromPlug(plug)
+            connectionList[index].connectModules()
 
             if (plug.getAttribute('type') === 'in') {
               let removeIndex = -1
               for (let i = 0; i < connectionList.length; i++) {
                 if ((connectionList[i].endElem === plug || connectionList[i].startElem === plug) && i !== index) {
+                  connectionList[i].disconnectModules()
                   connectionList[i].removeLine()
                   removeIndex = i
                 }
@@ -261,6 +306,7 @@ addEventListener('mouseup', (event) => {
                 connectionList.splice(removeIndex, 1)
               }
             }
+            console.log(connectionList)
           }
         })
       }

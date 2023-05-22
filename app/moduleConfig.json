@@ -1,12 +1,16 @@
 {
     "modules": [
         {
-            "name": "test1Module",
-            "width": 3
+            "name": "vcoModule",
+            "width": 3,
+            "module": "VcoModule",
+            "processor": "none"
         },
         {
-            "name": "test2Module",
-            "width": 2
+            "name": "audioModule",
+            "width": 2,
+            "module": "AudioModule",
+            "processor": "none"
         }
     ]
 }
