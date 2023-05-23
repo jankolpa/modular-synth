@@ -12,6 +12,8 @@ const audioContext = new (window.AudioContext || window.webkitAudioContext)()
 let audioContextAllowed = false
 const moduleArray = new Map()
 let moduleIDCounter = 0
+let connectionColorID = 0
+const connectionColorAmount = 4
 
 // create grid
 let gridHeight = (document.body.offsetHeight - document.getElementById('top-bar').offsetHeight) / 2
@@ -30,17 +32,21 @@ const grid = GridStack.init({
 
 // on event if user drags item to the left or right
 let isDragging = false
+let draggingElement = null
 let isScrollingLeft = false
 let isScrollingRight = false
-grid.on('dragstart', () => {
+grid.on('dragstart', (e) => {
   isDragging = true
+  draggingElement = e.target
 })
-grid.on('dragstop', () => {
+grid.on('dragstop', (e) => {
   isDragging = false
+  draggingElement = null
 
-  // temporary
   connectionList.forEach(conn => {
-    conn.update()
+    if ((conn.startModule.moduleElement === e.target.getElementsByClassName('module')[0]) || (conn.endModule.moduleElement === e.target.getElementsByClassName('module')[0])) {
+      conn.update()
+    }
   })
 })
 
@@ -157,7 +163,9 @@ function loadModule (index) {
             }
 
             if (alreadyUsed === false) {
-              connectionList.push(new Connection(canvas, plugs[i], null, thisModule, getPlugIDfromPlug(plugs[i])))
+              connectionList.push(new Connection(canvas, plugs[i], null, thisModule, getPlugIDfromPlug(plugs[i]), connectionColorID))
+              connectionColorID++
+              connectionColorID = connectionColorID % connectionColorAmount
 
               if (plugs[i].getAttribute('type') === 'in') {
                 document.getElementsByClassName('grid-stack')[0].setAttribute('connect-to', 'out')
@@ -218,9 +226,10 @@ addEventListener('mousemove', (event) => {
 
   // move modules
   if (isDragging) {
-    // temporary
     connectionList.forEach(conn => {
-      conn.update()
+      if ((conn.startModule.moduleElement === draggingElement.getElementsByClassName('module')[0]) || (conn.endModule.moduleElement === draggingElement.getElementsByClassName('module')[0])) {
+        conn.update()
+      }
     })
 
     const edgeSize = 80

@@ -2,7 +2,7 @@
 
 // eslint-disable-next-line no-unused-vars
 export default class Connection {
-  constructor (canvas, startElem, endElem, startModule, startOutput) {
+  constructor (canvas, startElem, endElem, startModule, startOutput, colorNr) {
     this.startModule = startModule
     this.startOutput = startOutput
     this.endModule = null
@@ -14,7 +14,7 @@ export default class Connection {
     const startX = this.startElem.getBoundingClientRect().left + window.scrollX + this.startElem.getBoundingClientRect().width / 2
     const startY = this.startElem.getBoundingClientRect().top + window.scrollY + this.startElem.getBoundingClientRect().height / 2
 
-    const myColor = 'path-color-' + 1
+    const myColor = 'path-color-' + colorNr
 
     this.line = document.createElementNS('http://www.w3.org/2000/svg', 'path')
     this.line.setAttribute('d', 'M ' + startX + ' ' + startY + ' ' + startX + ' ' + startY)
