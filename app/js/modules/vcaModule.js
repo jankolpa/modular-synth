@@ -16,7 +16,6 @@ export default class VcaModule extends Module {
   }
 
   initModule () {
-    console.log(this.moduleElement)
     this.slider_0 = this.moduleElement.getElementsByClassName('input-knob')[0]
     this.slider_0.oninput = function () {
       this.gainNodeMixer.gain.value = this.mapSliderToValue('exp', this.slider_0.value, 0, 1)

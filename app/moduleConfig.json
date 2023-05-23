@@ -17,6 +17,12 @@
             "width": 2,
             "module": "VcaModule",
             "processor": "none"
+        },
+        {
+            "name": "mixerModule",
+            "width": 3,
+            "module": "MixerModule",
+            "processor": "none"
         }
     ]
 }

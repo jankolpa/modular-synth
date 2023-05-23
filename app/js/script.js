@@ -3,6 +3,7 @@ import Connection from '../dist/connection.js'
 import VcoModule from '../dist/modules/vcoModule.js'
 import VcaModule from '../dist/modules/vcaModule.js'
 import AudioModule from '../dist/modules/audioModule.js'
+import MixerModule from '../dist/modules/mixerModule.js'
 
 const connectionList = []
 const plugList = []
@@ -97,19 +98,28 @@ xhr.onreadystatechange = function () {
   // eslint-disable-next-line eqeqeq
   if (xhr.readyState == 4 && xhr.status == '200') {
     consoleData = JSON.parse(xhr.responseText)
-    loadModule(0)
-    loadModule(2)
-    loadModule(1)
+    loadModule(0, 0, 0)
+    loadModule(0, 3, 0)
+    loadModule(2, 6, 0)
+    loadModule(3, 0, 1)
+    loadModule(1, 3, 1)
   }
 }
 xhr.send(null)
 
-function loadModule (index) {
+function loadModule (index, placeX, placeY) {
   const xhr = new XMLHttpRequest()
   xhr.open('GET', '../app/html/' + consoleData.modules[index].name + '.html', false)
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-      const newWidget = grid.addWidget({ w: consoleData.modules[index].width, h: 1, noResize: true, content: '<div class="module">' + xhr.responseText + '</div>' })
+      const newWidget = grid.addWidget({
+        w: consoleData.modules[index].width,
+        h: 1,
+        x: placeX,
+        y: placeY,
+        noResize: true,
+        content: '<div class="module">' + xhr.responseText + '</div>'
+      })
 
       // create module
       let thisModule = null
@@ -123,6 +133,8 @@ function loadModule (index) {
         thisModule = new AudioModule(audioContext, moduleElement)
       } else if (consoleData.modules[index].module === 'VcaModule') {
         thisModule = new VcaModule(audioContext, moduleElement)
+      } else if (consoleData.modules[index].module === 'MixerModule') {
+        thisModule = new MixerModule(audioContext, moduleElement)
       }
       moduleArray.set(currentModuleID, thisModule)
       moduleIDCounter++
