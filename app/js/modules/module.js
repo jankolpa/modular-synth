@@ -3,6 +3,7 @@
 export default class Module {
   constructor (moduleElement) {
     this.moduleElement = moduleElement
+    this.initModule()
   }
 
   mapSliderToValue (type, sliderValue, min, max) {
@@ -61,6 +62,10 @@ export default class Module {
     if (returnValue > 100) returnValue = 100
     if (returnValue < 0) returnValue = 0
     return returnValue
+  }
+
+  initModule () {
+
   }
 
   // Number of Inputs of this module

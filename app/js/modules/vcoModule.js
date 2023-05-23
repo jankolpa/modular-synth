@@ -26,7 +26,19 @@ export default class VcoModule extends Module {
     this.oscTri.type = 'triangle'
     this.oscTri.start()
 
-    // this.slider_0.value = this.mapValueToSlider('log', this.oscSine.frequency.value, 40, 6000)
+    this.slider_0.value = this.mapValueToSlider('log', this.oscSine.frequency.value, 40, 6000)
+  }
+
+  initModule () {
+    this.slider_0 = this.moduleElement.getElementsByClassName('input-knob')[0]
+
+    this.slider_0.oninput = function () {
+      const value = this.mapSliderToValue('log', this.slider_0.value, 40, 6000)
+      this.oscSine.frequency.value = value
+      this.oscSquare.frequency.value = value
+      this.oscSaw.frequency.value = value
+      this.oscTri.frequency.value = value
+    }.bind(this)
   }
 
   getNodeFromInput () {

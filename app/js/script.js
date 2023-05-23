@@ -1,6 +1,7 @@
 'use strict'
 import Connection from '../dist/connection.js'
 import VcoModule from '../dist/modules/vcoModule.js'
+import VcaModule from '../dist/modules/vcaModule.js'
 import AudioModule from '../dist/modules/audioModule.js'
 
 const connectionList = []
@@ -97,8 +98,8 @@ xhr.onreadystatechange = function () {
   if (xhr.readyState == 4 && xhr.status == '200') {
     consoleData = JSON.parse(xhr.responseText)
     loadModule(0)
+    loadModule(2)
     loadModule(1)
-    loadModule(0)
   }
 }
 xhr.send(null)
@@ -114,10 +115,14 @@ function loadModule (index) {
       let thisModule = null
       const currentModuleID = '' + moduleIDCounter + '-' + consoleData.modules[index].name
       const moduleElement = newWidget.getElementsByClassName('module')[0]
+
+      // temporary
       if (consoleData.modules[index].module === 'VcoModule') {
         thisModule = new VcoModule(audioContext, moduleElement)
       } else if (consoleData.modules[index].module === 'AudioModule') {
         thisModule = new AudioModule(audioContext, moduleElement)
+      } else if (consoleData.modules[index].module === 'VcaModule') {
+        thisModule = new VcaModule(audioContext, moduleElement)
       }
       moduleArray.set(currentModuleID, thisModule)
       moduleIDCounter++

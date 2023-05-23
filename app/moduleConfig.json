@@ -11,6 +11,12 @@
             "width": 2,
             "module": "AudioModule",
             "processor": "none"
+        },
+        {
+            "name": "vcaModule",
+            "width": 2,
+            "module": "VcaModule",
+            "processor": "none"
         }
     ]
 }
