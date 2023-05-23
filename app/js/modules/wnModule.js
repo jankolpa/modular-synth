@@ -10,8 +10,6 @@ export default class WnModule extends Module {
     this.numberOfOutputs = 1
     this.ioAssignment = [[], [false]]
 
-    console.log(audioContext)
-
     this.wnNode = new AudioWorkletNode(audioContext, 'wnProcessor', {
       numberOfInputs: 0,
       inputChannelCount: [],

@@ -24,6 +24,11 @@
             "name": "wnModule",
             "width": 2,
             "module": "WnModule"
+        },
+        {
+            "name": "lfoModule",
+            "width": 3,
+            "module": "LfoModule"
         }
     ]
 }
