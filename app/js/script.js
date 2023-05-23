@@ -4,6 +4,7 @@ import VcoModule from '../dist/modules/vcoModule.js'
 import VcaModule from '../dist/modules/vcaModule.js'
 import AudioModule from '../dist/modules/audioModule.js'
 import MixerModule from '../dist/modules/mixerModule.js'
+import WnModule from '../dist/modules/wnModule.js'
 
 const connectionList = []
 const plugList = []
@@ -101,11 +102,21 @@ xhr.onreadystatechange = function () {
     loadModule(0, 0, 0)
     loadModule(0, 3, 0)
     loadModule(2, 6, 0)
-    loadModule(3, 0, 1)
-    loadModule(1, 3, 1)
+    loadModule(4, 0, 1)
+    loadModule(3, 2, 1)
+    loadModule(1, 5, 1)
   }
 }
-xhr.send(null)
+
+loadSynth()
+// loads all custom processors
+async function loadSynth () {
+  const modules = ['../dist/processors/wnProcessor.js']
+  for (let i = 0; i < modules.length; i++) {
+    await audioContext.audioWorklet.addModule(modules[i])
+  }
+  xhr.send(null)
+}
 
 function loadModule (index, placeX, placeY) {
   const xhr = new XMLHttpRequest()
@@ -135,6 +146,8 @@ function loadModule (index, placeX, placeY) {
         thisModule = new VcaModule(audioContext, moduleElement)
       } else if (consoleData.modules[index].module === 'MixerModule') {
         thisModule = new MixerModule(audioContext, moduleElement)
+      } else if (consoleData.modules[index].module === 'WnModule') {
+        thisModule = new WnModule(audioContext, moduleElement)
       }
       moduleArray.set(currentModuleID, thisModule)
       moduleIDCounter++

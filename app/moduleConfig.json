@@ -3,26 +3,27 @@
         {
             "name": "vcoModule",
             "width": 3,
-            "module": "VcoModule",
-            "processor": "none"
+            "module": "VcoModule"
         },
         {
             "name": "audioModule",
             "width": 2,
-            "module": "AudioModule",
-            "processor": "none"
+            "module": "AudioModule"
         },
         {
             "name": "vcaModule",
             "width": 2,
-            "module": "VcaModule",
-            "processor": "none"
+            "module": "VcaModule"
         },
         {
             "name": "mixerModule",
             "width": 3,
-            "module": "MixerModule",
-            "processor": "none"
+            "module": "MixerModule"
+        },
+        {
+            "name": "wnModule",
+            "width": 2,
+            "module": "WnModule"
         }
     ]
 }
