@@ -53,7 +53,7 @@ class VcaProcessor extends AudioWorkletProcessor {
       if (this.ioAssignment[0][0] === false || input1Channel === undefined) {
         output1Channel[i] = input2Channel[i] * gain[0]
       } else {
-        if (input1Channel[i] < 0.1) {
+        if (input1Channel[i] < 0) {
           output1Channel[i] = 0
         } else {
           output1Channel[i] = input2Channel[i] * input1Channel[i]

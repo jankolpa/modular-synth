@@ -29,6 +29,11 @@
             "name": "lfoModule",
             "width": 3,
             "module": "LfoModule"
+        },
+        {
+            "name": "visModule",
+            "width": 5,
+            "module": "VisModule"
         }
     ]
 }

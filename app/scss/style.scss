@@ -326,6 +326,14 @@ $columns: 50;
         position: absolute;
         pointer-events: none;
     }
+
+    .visualizer {
+        position: absolute;
+        width: 80%;
+        left: 10%;
+        height: 66%;
+        border: #000 2px solid;
+    }
 }
 
 #line-canvas {

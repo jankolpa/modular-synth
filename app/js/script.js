@@ -6,6 +6,7 @@ import AudioModule from '../dist/modules/audioModule.js'
 import MixerModule from '../dist/modules/mixerModule.js'
 import WnModule from '../dist/modules/wnModule.js'
 import LfoModule from '../dist/modules/lfoModule.js'
+import VisModule from '../dist/modules/visModule.js'
 
 const connectionList = []
 const plugList = []
@@ -101,8 +102,9 @@ xhr.onreadystatechange = function () {
   if (xhr.readyState == 4 && xhr.status == '200') {
     consoleData = JSON.parse(xhr.responseText)
     loadModule(0, 0, 0)
-    loadModule(0, 3, 0)
-    loadModule(5, 6, 0)
+    loadModule(6, 3, 0)
+    loadModule(5, 8, 0)
+    loadModule(0, 11, 0)
     loadModule(2, 0, 1)
     loadModule(2, 2, 1)
     loadModule(4, 4, 1)
@@ -157,6 +159,8 @@ function loadModule (index, placeX, placeY) {
         thisModule = new WnModule(audioContext, moduleElement)
       } else if (consoleData.modules[index].module === 'LfoModule') {
         thisModule = new LfoModule(audioContext, moduleElement)
+      } else if (consoleData.modules[index].module === 'VisModule') {
+        thisModule = new VisModule(audioContext, moduleElement)
       }
 
       moduleArray.set(currentModuleID, thisModule)
