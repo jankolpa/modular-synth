@@ -34,6 +34,11 @@
             "name": "visModule",
             "width": 5,
             "module": "VisModule"
+        },
+        {
+            "name": "clockModule",
+            "width": 2,
+            "module": "ClockModule"
         }
     ]
 }
