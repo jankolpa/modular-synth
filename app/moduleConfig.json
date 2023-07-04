@@ -39,6 +39,11 @@
             "name": "clockModule",
             "width": 2,
             "module": "ClockModule"
+        },
+        {
+            "name": "gateModule",
+            "width": 2,
+            "module": "GateModule"
         }
     ]
 }

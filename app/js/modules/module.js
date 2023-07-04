@@ -51,8 +51,13 @@ export default class Module {
         break
       }
       case 'exp': {
-        const sliderValue = ((Math.log(value + 0.009) / Math.log(50)) + 1.2) / 1.202
-        returnValue = sliderValue * 100
+        if (value === min) {
+          return 0
+        }
+        const faktor = (value - min) / (max - min)
+        const exponent = (Math.log10(faktor + 0.009) / Math.log10(50) + 1.2) / 1.202
+        const sliderValue = exponent * 100
+        returnValue = sliderValue
         break
       }
       default:
