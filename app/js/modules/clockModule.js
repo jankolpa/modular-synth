@@ -7,23 +7,35 @@ export default class ClockModule extends Module {
     super(moduleElement)
 
     this.audioContext = audioContext
-    this.numberOfInputs = 0
+    this.numberOfInputs = 1
     this.numberOfOutputs = 3
-    this.ioAssignment = [[], [false, false, false]]
+    this.ioAssignment = [[false], [false, false, false]]
     this.clockNode = new AudioWorkletNode(audioContext, 'clockProcessor', {
-      numberOfInputs: 0,
-      inputChannelCount: [],
+      numberOfInputs: 1,
+      inputChannelCount: [1],
       numberOfOutputs: 3,
       outputChannelCount: [1, 1, 1]
     })
 
     this.slider_0.value = this.mapValueToSlider('log', this.clockNode.parameters.get('bpm').value, 30, 300)
+    this.slider_1.value = 50
   }
 
   initModule () {
     this.slider_0 = this.moduleElement.getElementsByClassName('input-knob')[0]
+    this.slider_1 = this.moduleElement.getElementsByClassName('input-knob')[1]
+
     this.slider_0.oninput = function () {
       this.clockNode.parameters.get('bpm').value = this.mapSliderToValue('log', this.slider_0.value, 30, 300)
+    }.bind(this)
+
+    this.slider_1.oninput = function () {
+      const posSliderValue = (this.slider_1.value - 50) * 2
+      if (posSliderValue >= 0) {
+        this.clockNode.parameters.get('bpmAdjust').value = this.mapSliderToValue('lin', posSliderValue, 0, 1)
+      } else {
+        this.clockNode.parameters.get('bpmAdjust').value = (-1) * this.mapSliderToValue('lin', (-1) * posSliderValue, 0, 1)
+      }
     }.bind(this)
   }
 

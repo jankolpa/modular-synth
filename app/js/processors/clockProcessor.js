@@ -9,13 +9,19 @@ class ClockProcessor extends AudioWorkletProcessor {
       minValue: 30,
       maxValue: 300,
       automationRate: 'k-rate'
+    }, {
+      name: 'bpmAdjust',
+      defaultValue: 0,
+      minValue: -1,
+      maxValue: 1,
+      automationRate: 'a-rate'
     }]
   }
 
   constructor () {
     super()
     this.running = true
-    this.ioAssignment = [[], [false, false, false]]
+    this.ioAssignment = [[false], [false, false, false]]
 
     this.lastClick = 0
     this.click = true
@@ -43,7 +49,20 @@ class ClockProcessor extends AudioWorkletProcessor {
       return true
     }
 
-    const timeDelay = 60 / (parameters.bpm * 4)
+    const input1 = inputs[0]
+    const input1Channel = input1[0]
+
+    let currentBPM = parseFloat(parameters.bpm)
+    if (this.ioAssignment[0][0] === true) {
+      const adjustValue = parseFloat(parameters.bpmAdjust) * input1Channel[0]
+      if (adjustValue >= 0) {
+        currentBPM = currentBPM * (1 + 3 * adjustValue)
+      } else {
+        currentBPM = currentBPM / (1 + 3 * Math.abs(adjustValue))
+      }
+    }
+
+    const timeDelay = 60 / (currentBPM * 4)
     if (currentTime - this.lastClick > timeDelay) {
       this.click = true
     }
