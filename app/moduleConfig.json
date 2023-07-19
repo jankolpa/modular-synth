@@ -44,6 +44,11 @@
             "name": "gateModule",
             "width": 2,
             "module": "GateModule"
+        },
+        {
+            "name": "envModule",
+            "width": 3,
+            "module": "EnvModule"
         }
     ]
 }

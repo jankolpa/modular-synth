@@ -9,6 +9,7 @@ import LfoModule from '../dist/modules/lfoModule.js'
 import VisModule from '../dist/modules/visModule.js'
 import ClockModule from '../dist/modules/clockModule.js'
 import GateModule from '../dist/modules/gateModule.js'
+import EnvModule from '../dist/modules/envModule.js'
 
 const connectionList = []
 const plugList = []
@@ -107,12 +108,16 @@ xhr.onreadystatechange = function () {
     loadModule(6, 3, 0)
     loadModule(5, 8, 0)
     loadModule(0, 11, 0)
+    loadModule(3, 14, 0)
     loadModule(2, 0, 1)
     loadModule(7, 2, 1)
     loadModule(8, 4, 1)
-    loadModule(1, 6, 1)
-    loadModule(3, 8, 1)
-    loadModule(4, 11, 1)
+    loadModule(9, 6, 1)
+    loadModule(1, 9, 1)
+    loadModule(3, 11, 1)
+    loadModule(4, 14, 1)
+    loadModule(2, 16, 1)
+    loadModule(2, 18, 1)
   }
 }
 
@@ -124,7 +129,8 @@ async function loadSynth () {
     '../dist/processors/vcaProcessor.js',
     '../dist/processors/helperToPosProcessor.js',
     '../dist/processors/clockProcessor.js',
-    '../dist/processors/gateProcessor.js'
+    '../dist/processors/gateProcessor.js',
+    '../dist/processors/envProcessor.js'
   ]
   for (let i = 0; i < modules.length; i++) {
     await audioContext.audioWorklet.addModule(modules[i])
@@ -170,6 +176,8 @@ function loadModule (index, placeX, placeY) {
         thisModule = new ClockModule(audioContext, moduleElement)
       } else if (consoleData.modules[index].module === 'GateModule') {
         thisModule = new GateModule(audioContext, moduleElement)
+      } else if (consoleData.modules[index].module === 'EnvModule') {
+        thisModule = new EnvModule(audioContext, moduleElement)
       }
 
       moduleArray.set(currentModuleID, thisModule)
