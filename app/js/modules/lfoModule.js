@@ -58,14 +58,14 @@ export default class LfoModule extends Module {
     })
     this.oscTri.connect(this.toPosNode3)
 
-    this.slider_0.value = this.mapValueToSlider('log', this.oscSine.frequency.value, 0.2, 800)
+    this.slider_0.value = this.mapValueToSlider('log', this.oscSine.frequency.value, 0.1, 800)
   }
 
   initModule () {
     this.slider_0 = this.moduleElement.getElementsByClassName('input-knob')[0]
 
     this.slider_0.oninput = function () {
-      const value = this.mapSliderToValue('log', this.slider_0.value, 0.2, 1000)
+      const value = this.mapSliderToValue('log', this.slider_0.value, 0.1, 1000)
       this.oscSine.frequency.value = value
       this.oscSquare.frequency.value = value
       this.oscSaw.frequency.value = value
