@@ -272,6 +272,29 @@ function loadModule (index, placeX, placeY) {
         })
         plugList.push(plugs[i])
       }
+
+      // add functionality to delete-button
+      const deleteButtonElement = newWidget.getElementsByClassName('delete-button')[0]
+      deleteButtonElement.addEventListener('click', function () {
+        // deleting a module
+        const removeArray = []
+        for (let index = 0; index < connectionList.length; index++) {
+          if (connectionList[index].endModule === thisModule || connectionList[index].startModule === thisModule) {
+            connectionList[index].disconnectModules()
+            connectionList[index].removeLine()
+            removeArray.push(index)
+          }
+        }
+        if (removeArray.length >= 0) {
+          for (let index = removeArray.length - 1; index >= 0; index--) {
+            connectionList.splice(removeArray[index], 1)
+          }
+        }
+
+        thisModule.deleteNode()
+        newWidget.remove()
+        grid.removeWidget(newWidget)
+      })
     }
   }
   xhr.send()

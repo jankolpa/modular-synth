@@ -100,7 +100,6 @@ export default class LfoModule extends Module {
       } else {
         this.adjustFreqValue = (-1) * this.mapSliderToValue('lin', (-1) * posSliderValue, 0, 1)
       }
-      console.log(this.adjustFreqValue)
     }.bind(this)
   }
 

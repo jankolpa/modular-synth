@@ -15,7 +15,7 @@ body {
     position: fixed;
     left: 0;
     top: 0;
-    z-index: 100;
+    z-index: 102;
     user-select: none;
 
     .navbar-brand {
@@ -132,6 +132,20 @@ $columns: 50;
     height: 100%;
     position: relative;
 
+    .delete-button {
+        position: absolute;
+        right: calc($module-size-px / 150);
+        top: calc($module-size-px / 150);
+        padding: 0;
+        border: none;
+        
+        span {
+            font-size: calc($module-size-px / 24) !important;
+            margin: 0;
+            line-height: unset;
+        }
+    }
+
     h1,
     h2,
     h3,
@@ -145,6 +159,7 @@ $columns: 50;
         text-align: center;
         cursor: default;
         font-weight: bold;
+        pointer-events: none;
     }
 
     .rotary-knob {
