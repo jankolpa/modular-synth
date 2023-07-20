@@ -39,17 +39,18 @@ const grid = GridStack.init({
 })
 
 // on event if user drags item to the left or right
-let isDragging = false
-let draggingElement = null
+let isDraggingModule = false
+let isDraggingCable = false
+// let draggingElement = null
 let isScrollingLeft = false
 let isScrollingRight = false
 grid.on('dragstart', (e) => {
-  isDragging = true
-  draggingElement = e.target
+  isDraggingModule = true
+  // draggingElement = e.target
 })
 grid.on('dragstop', (e) => {
-  isDragging = false
-  draggingElement = null
+  isDraggingModule = false
+  // draggingElement = null
 
   connectionList.forEach(conn => {
     if ((conn.startModule.moduleElement === e.target.getElementsByClassName('module')[0]) || (conn.endModule.moduleElement === e.target.getElementsByClassName('module')[0])) {
@@ -141,6 +142,7 @@ async function loadSynth () {
 
 function initModuleMenu () {
   const addModuleMenu = document.getElementsByClassName('add-module-menu')[0]
+  const moduleMenuElementList = []
   for (let index = 0; index < consoleData.modules.length; index++) {
     const moduleMenuElement = document.createElement('a')
     moduleMenuElement.innerHTML = consoleData.modules[index].name
@@ -166,7 +168,20 @@ function initModuleMenu () {
       }
     })
 
-    addModuleMenu.appendChild(moduleMenuElement)
+    moduleMenuElementList.push(moduleMenuElement)
+  }
+
+  moduleMenuElementList.sort(function (a, b) {
+    if (a.innerHTML < b.innerHTML) {
+      return -1
+    }
+    if (a.innerHTML > b.innerHTML) {
+      return 1
+    }
+    return 0
+  })
+  for (let index = 0; index < moduleMenuElementList.length; index++) {
+    addModuleMenu.appendChild(moduleMenuElementList[index])
   }
 }
 
@@ -341,13 +356,24 @@ addEventListener('mousemove', (event) => {
   mousePosY = event.pageY
 
   // move modules
-  if (isDragging) {
+  if (isDraggingModule) {
     connectionList.forEach(conn => {
       // temporary
       // if ((conn.startModule.moduleElement === draggingElement.getElementsByClassName('module')[0]) || (conn.endModule.moduleElement === draggingElement.getElementsByClassName('module')[0])) {
       conn.update()
     })
+  }
 
+  // move connection
+  isDraggingCable = false
+  connectionList.forEach(conn => {
+    if (conn.endElem === null) {
+      isDraggingCable = true
+      conn.updateEndCords(event.pageX, event.pageY)
+    }
+  })
+
+  if (isDraggingModule || isDraggingCable) {
     const edgeSize = 80
     const bodyWidth = document.body.offsetWidth
     if (event.clientX < edgeSize) {
@@ -370,13 +396,6 @@ addEventListener('mousemove', (event) => {
       stopScrollRight()
     }
   }
-
-  // move connection
-  connectionList.forEach(conn => {
-    if (conn.endElem === null) {
-      conn.updateEndCords(event.pageX, event.pageY)
-    }
-  })
 })
 
 addEventListener('mouseup', (event) => {
