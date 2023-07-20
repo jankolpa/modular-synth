@@ -343,9 +343,9 @@ addEventListener('mousemove', (event) => {
   // move modules
   if (isDragging) {
     connectionList.forEach(conn => {
-      if ((conn.startModule.moduleElement === draggingElement.getElementsByClassName('module')[0]) || (conn.endModule.moduleElement === draggingElement.getElementsByClassName('module')[0])) {
-        conn.update()
-      }
+      // temporary
+      // if ((conn.startModule.moduleElement === draggingElement.getElementsByClassName('module')[0]) || (conn.endModule.moduleElement === draggingElement.getElementsByClassName('module')[0])) {
+      conn.update()
     })
 
     const edgeSize = 80
