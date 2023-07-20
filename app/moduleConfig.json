@@ -1,54 +1,54 @@
 {
     "modules": [
         {
-            "name": "vcoModule",
+            "id": "vcoModule",
             "width": 3,
-            "module": "VcoModule"
+            "name": "VCO"
         },
         {
-            "name": "audioModule",
+            "id": "audioModule",
             "width": 2,
-            "module": "AudioModule"
+            "name": "Audio"
         },
         {
-            "name": "vcaModule",
+            "id": "vcaModule",
             "width": 2,
-            "module": "VcaModule"
+            "name": "VCA"
         },
         {
-            "name": "mixerModule",
+            "id": "mixerModule",
             "width": 3,
-            "module": "MixerModule"
+            "name": "Mixer"
         },
         {
-            "name": "wnModule",
+            "id": "wnModule",
             "width": 2,
-            "module": "WnModule"
+            "name": "White Noise"
         },
         {
-            "name": "lfoModule",
+            "id": "lfoModule",
             "width": 3,
-            "module": "LfoModule"
+            "name": "LFO"
         },
         {
-            "name": "visModule",
+            "id": "visModule",
             "width": 5,
-            "module": "VisModule"
+            "name": "Visualizer"
         },
         {
-            "name": "clockModule",
+            "id": "clockModule",
             "width": 2,
-            "module": "ClockModule"
+            "name": "Clock"
         },
         {
-            "name": "gateModule",
+            "id": "gateModule",
             "width": 2,
-            "module": "GateModule"
+            "name": "Gate"
         },
         {
-            "name": "envModule",
+            "id": "envModule",
             "width": 3,
-            "module": "EnvModule"
+            "name": "Envelope"
         }
     ]
 }
