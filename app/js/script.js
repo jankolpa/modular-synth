@@ -10,6 +10,7 @@ import VisModule from '../dist/modules/visModule.js'
 import ClockModule from '../dist/modules/clockModule.js'
 import GateModule from '../dist/modules/gateModule.js'
 import EnvModule from '../dist/modules/envModule.js'
+import CustomModule from '../dist/modules/customModule.js'
 
 // AudioContext für die nutzung von Audio im Browser
 const audioContext = new (window.AudioContext || window.webkitAudioContext)()
@@ -149,7 +150,8 @@ async function startModuleInit () {
     '../dist/processors/helperToPosProcessor.js',
     '../dist/processors/clockProcessor.js',
     '../dist/processors/gateProcessor.js',
-    '../dist/processors/envProcessor.js'
+    '../dist/processors/envProcessor.js',
+    '../dist/processors/customProcessor.js'
   ]
 
   // Schleife über alle Processor-Pfade, um die Dateien zu laden
@@ -423,6 +425,158 @@ function loadModule (index, placeX, placeY) {
   // die HTML-Datei des Modules wird tatsächlich geladen
   moduleHtmlXHR.send()
 }
+
+// ------------- CREATE MODULE ----------------------------------------------------------------------------------------
+
+const createModuleHTML = '<button class="delete-button"><span class="material-icons">delete</span></button><h1 style="top: 3%; left: 50%;">NEUES<br>MODULE</h1><div class="plug" style="top: 45%; left: 31%;"><button class="plug-button index-0" type="in"></button><div><a class="plug-text">IN 1</a></div></div><div class="plug" style="top: 45%; left: 69%;"><button class="plug-button index-1" type="in"></button><div><a class="plug-text">IN 2</a></div></div><div class="plug" style="top: 65%; left: 31%;"><button class="plug-button index-0" type="out"></button><div><a class="plug-text">OUT 1</a></div></div><div class="plug" style="top: 65%; left: 69%;"><button class="plug-button index-1" type="out"></button><div><a class="plug-text">OUT 2</a></div></div><div class="plug" style="top: 82%; left: 50%;"><button class="plug-button index-2" type="out"></button><div><a class="plug-text">MIX</a></div></div>'
+const createModuleWidth = 3
+const cretaeModuleNumOfInputs = 2
+const cretaeModuleNumOfOutputs = 3
+const cretaeModuleProcessFunction = 'for (let i = 0; i < outputs[0].length; ++i) { if(inputs[0] === undefined && inputs[1] === undefined) { outputs[0][i] = 0; outputs[1][i] = 0; outputs[2][i] = 0; } else if (inputs[0] === undefined) { outputs[0][i] = 0; outputs[1][i] = inputs[1][i]; outputs[2][i] = inputs[1][i]; } else if (inputs[1] === undefined) { outputs[0][i] = inputs[0][i]; outputs[1][i] = 0; outputs[2][i] = inputs[0][i]; } else { outputs[0][i] = inputs[0][i]; outputs[1][i] = inputs[1][i]; outputs[2][i] = (inputs[0][i] + inputs[1][i]) / 2; }} return outputs;'
+
+const createModuleElement = document.getElementsByClassName('create-module')[0]
+createModuleElement.addEventListener('click', function () {
+  const newWidget = mainGrid.addWidget({
+    w: createModuleWidth,
+    h: 1,
+    x: 0,
+    y: 1,
+    noResize: true,
+    // die geladene HTML-Datei wird als Inhalt des neuen Widget gesetzt und mit einem <div>-wrapper mit der Klasse "module" umhüllt
+    content: '<div class="module">' + createModuleHTML + '</div>'
+  })
+
+  // newModuleObject speichert das neue Modul als Object
+  let newModuleObject = null
+  // newModuleElement speichert das neue Modul als DOM-Element
+  const newModuleElement = newWidget.getElementsByClassName('module')[0]
+
+  // das newModuleObject wird je nach ID der moduleConfig.json-Datei erstellt
+  newModuleObject = new CustomModule(audioContext, newModuleElement, cretaeModuleNumOfInputs, cretaeModuleNumOfOutputs, cretaeModuleProcessFunction)
+
+  // das neue newModuleObject wird in das moduleArray gesetzt
+  moduleArray.push(newModuleObject)
+
+  // newModulePlugList speichert alle Plugs des neuen Modules als DOM-Elemente
+  const newModulePlugList = newWidget.getElementsByClassName('plug-button')
+
+  // eine Schleife, die über alle Plugs des neuen Modules läuft
+  for (let i = 0; i < newModulePlugList.length; i++) {
+    // Dem Linksklick auf einen Plug wird Funktionalität hinzugefügt
+    newModulePlugList[i].addEventListener('mousedown', (e) => {
+      if (e.button === 0) {
+        // plugAlreadyConnected speichert, ob das aktuelle Plug schon eine Connection hat
+        let plugAlreadyConnected = false
+
+        // Es wird überprüft ob der Nutzer einer Connection löst
+        // Dies kann nur der Fall sein wenn der Nutzer 1) auf ein IN-Plug drückt oder 2) auf ein OUT-Plug ohne der Shift-Taste drückt
+        if (newModulePlugList[i].getAttribute('type') === 'in' || e.shiftKey === false) {
+          // eine Schleift, die über alle bestehenden Connections läuft
+          for (let j = connectionArray.length - 1; j >= 0; j--) {
+            // gibt es schon eine Connection, die das aktuelle Plug beinhaltet?
+            if (connectionArray[j].startElem === newModulePlugList[i] || connectionArray[j].endElem === newModulePlugList[i]) {
+              plugAlreadyConnected = true
+              // die aktuelle Connection wird getrennt
+              connectionArray[j].disconnectModules()
+
+              // die aktuelle Connection führt jetzt vom alten Startelement zu null (zur Maus)
+              // (falls das alte Startelement getrennt wurde, muss das alte Endelement zum neuen Startelement werden)
+              if (connectionArray[j].endElem === newModulePlugList[i]) {
+                connectionArray[j].endElem = null
+                connectionArray[j].endModule = null
+                connectionArray[j].endInput = null
+              } else {
+                connectionArray[j].startElem = connectionArray[j].endElem
+                connectionArray[j].startModule = connectionArray[j].endModule
+                connectionArray[j].startOutput = connectionArray[j].endInput
+                connectionArray[j].endElem = null
+                connectionArray[j].endModule = null
+                connectionArray[j].endInput = null
+                connectionArray[j].rewriteLine()
+              }
+
+              connectionArray[j].updateEndCords(currentMousePosX, currentMousePosY)
+
+              // für CSS-Darstellung bekommt der grid eine Klasse, die asussagt, welchen Plugtypen der Nutzer sucht
+              if (connectionArray[j].startElem.getAttribute('type') === 'in') {
+                document.getElementsByClassName('grid-stack')[0].setAttribute('connect-to', 'out')
+              } else {
+                document.getElementsByClassName('grid-stack')[0].setAttribute('connect-to', 'in')
+              }
+
+              // für CSS-Darstellung bekommt das Startelement der aktuellen Connection eine Klasse, die aussagt, von wo die Connection kommt
+              connectionArray[j].startElem.setAttribute('selected', true)
+
+              // der Nutzer soll nur die oberste Connection trennen, auch wenn mehrer Connections diesen Plug betreffen,
+              // deshalb wird die Schleife über alle Connections verlassen
+              return
+            }
+          }
+        }
+
+        // wenn der Nutzer durch sein Klick keine bestehende Connection getrennt hat, (da der IN-Plug leer war oder er einen OUT-Plug mit Shift benutzt hat)
+        // dann wird eine neue Connection erstellt
+        if (plugAlreadyConnected === false) {
+          // neue Connection wird erstellt, vom aktuellen Plug zu null mit dem aktullen FarbIndex
+          connectionArray.push(new Connection(cableCanvas, newModulePlugList[i], null, newModuleObject, getPlugIDfromPlug(newModulePlugList[i]), connectionColorIndex))
+          connectionColorIndex++
+          connectionColorIndex = connectionColorIndex % connectionColorAmount
+
+          // für CSS-Darstellung bekommt der grid eine Klasse, die asussagt, welchen Plugtypen der Nutzer sucht
+          if (newModulePlugList[i].getAttribute('type') === 'in') {
+            document.getElementsByClassName('grid-stack')[0].setAttribute('connect-to', 'out')
+          } else {
+            document.getElementsByClassName('grid-stack')[0].setAttribute('connect-to', 'in')
+          }
+
+          // für CSS-Darstellung bekommt das Startelement der aktuellen Connection eine Klasse, die aussagt, von wo die Connection kommt
+          newModulePlugList[i].setAttribute('selected', true)
+        }
+      }
+    })
+
+    // das aktuelle Plug wird dem allgemeinen PlugArray hinzugefügt
+    plugArray.push(newModulePlugList[i])
+  }
+
+  // newModuleDeleteElement speichert das DOM-Element des Delete-Buttons des neuen Modules
+  const newModuleDeleteElement = newWidget.getElementsByClassName('delete-button')[0]
+  // dem Delete-Button wird Funktionalität hinzugefügt
+  newModuleDeleteElement.addEventListener('click', function () {
+    // removeConnectionsArray werden Indexe für alle Connections gespeichert, die gelöscht werden müssen
+    const removeConnectionsArray = []
+
+    // eine Schleife, die über alle bestehenden Connections läuft
+    for (let i = 0; i < connectionArray.length; i++) {
+      // Wenn eine bestehende Connection das aktuelle (zu löschende) Modul betrifft, wird diese Verbindung getrennt und in das removeConnectionsArray hinzugefügt
+      if (connectionArray[i].endModule === newModuleObject || connectionArray[i].startModule === newModuleObject) {
+        connectionArray[i].disconnectModules()
+        connectionArray[i].removeLine()
+        removeConnectionsArray.push(i)
+      }
+    }
+
+    if (removeConnectionsArray.length >= 0) {
+      // eine Schleife, die Rückwerts über alle zu löschende Connection-Indexe läuft und sie aus dem connectionArray entfernt
+      for (let i = removeConnectionsArray.length - 1; i >= 0; i--) {
+        connectionArray.splice(removeConnectionsArray[i], 1)
+      }
+    }
+
+    // das Modul-Objekt und Modul-DOM-Element werden gelöscht
+    newModuleObject.deleteNode()
+    let removeModuleIndex = -1
+    // eine Schleife, die über das modulArray läuft, um das aktuelle Modul daraus zu löschen
+    for (let i = 0; i < moduleArray.length; i++) {
+      if (moduleArray[i] === newModuleObject) {
+        removeModuleIndex = i
+      }
+    }
+    moduleArray.splice(removeModuleIndex, 1)
+    newWidget.remove()
+    mainGrid.removeWidget(newWidget)
+  })
+})
 
 // ------------- EVENTS -----------------------------------------------------------------------------------------------
 
