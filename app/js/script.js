@@ -45,6 +45,19 @@ let moduleConfigData
 const gridResizeStyle = document.createElement('style')
 document.head.appendChild(gridResizeStyle)
 
+// customModulesArray speicher alle costum-modules des Nutzer in einem Array mit Objekten
+const customModulesArray = []
+// temporary
+customModulesArray.push({
+  name: 'Module Mixer',
+  html: '<button class="delete-button"><span class="material-icons">delete</span></button><h1 style="top: 3%; left: 50%;">NEUES<br>MODULE</h1><div class="rotary-knob" style="top: 17%; left: 31%;"><input type="range" class="input-knob" data-diameter="100px" data-src="./assets/knob_1.png" data-sprites="99" /><div><a class="input-text">GAIN</a></div></div><div class="rotary-knob" style="top: 17%; left: 69%;"><input type="range" class="input-knob" data-diameter="100px" data-src="./assets/knob_1.png" data-sprites="99" /><div><a class="input-text">MIX</a></div></div><div class="plug" style="top: 45%; left: 31%;"><button class="plug-button index-0" type="in"></button><div><a class="plug-text">IN 1</a></div></div><div class="plug" style="top: 45%; left: 69%;"><button class="plug-button index-1" type="in"></button><div><a class="plug-text">IN 2</a></div></div><div class="plug" style="top: 65%; left: 31%;"><button class="plug-button index-0" type="out"></button><div><a class="plug-text">OUT 1</a></div></div><div class="plug" style="top: 65%; left: 69%;"><button class="plug-button index-1" type="out"></button><div><a class="plug-text">OUT 2</a></div></div><div class="plug" style="top: 82%; left: 50%;"><button class="plug-button index-2" type="out"></button><div><a class="plug-text">MIX</a></div></div>',
+  width: 3,
+  numOfInputs: 2,
+  numOfOutputs: 3,
+  function: 'for (let i = 0; i < outputs[0].length; ++i) { if(inputs[0] === undefined && inputs[1] === undefined) { outputs[0][i] = 0; outputs[1][i] = 0; outputs[2][i] = 0; } else if (inputs[0] === undefined) { outputs[0][i] = 0; outputs[1][i] = inputs[1][i] * this.paramaterMap.get("gain").value; outputs[2][i] = inputs[1][i] * this.paramaterMap.get("gain").value; } else if (inputs[1] === undefined) { outputs[0][i] = inputs[0][i] * this.paramaterMap.get("gain").value; outputs[1][i] = 0; outputs[2][i] = inputs[0][i] * this.paramaterMap.get("gain").value; } else { outputs[0][i] = inputs[0][i] * this.paramaterMap.get("gain").value; outputs[1][i] = inputs[1][i] * this.paramaterMap.get("gain").value; outputs[2][i] = (inputs[0][i] * (1 - this.paramaterMap.get("mix").value) + inputs[1][i] * this.paramaterMap.get("mix").value) * this.paramaterMap.get("gain").value; }} return outputs;',
+  parameters: [{ name: 'gain', value: 0.8, minValue: 0, maxValue: 1, type: 'exp' }, { name: 'mix', value: 0.5, minValue: 0, maxValue: 1, type: 'lin' }]
+})
+
 // ------------- INIT GRID --------------------------------------------------------------------------------------------
 // gridHeight wird aus der Bildschirmhöhe berechnet und gibt die Grundlage für alle propotionale Darstellung innerhalb eines Modules
 let gridHeight = (document.body.offsetHeight - document.getElementById('top-bar').offsetHeight) / 2 + 3
@@ -225,6 +238,80 @@ function initModuleMenu () {
   for (let i = 0; i < moduleMenuElementList.length; i++) {
     addModuleMenuElement.appendChild(moduleMenuElementList[i])
   }
+
+  // falls schon costum-module im costumModuleArray sind, werden sie sofort ins Menü geladen
+  updateCustomModulesMenu()
+}
+
+// diese Funktion aktualisiert den unteren Teil des ModuleMenüs mit den custom modules
+function updateCustomModulesMenu () {
+  // addModuleMenuElement ist das DOM-Element für das module-menü
+  const addModuleMenuElement = document.getElementsByClassName('add-module-menu')[0]
+
+  // zuerst wird der costum-module Teil des Menüs gelöscht
+  const deleteOldWrapper = document.getElementsByClassName('custom-modules-wrapper')
+  if (deleteOldWrapper.length > 0) {
+    deleteOldWrapper[0].remove()
+  }
+
+  // falls es customModules gibt, werden sie dem Menü hinzugefügt
+  if (customModulesArray.length >= 0) {
+    // customModulesWrapper ist ein DIV-Element, in dem die costom-module-menüpunkte sind
+    const customModulesWrapper = document.createElement('div')
+    customModulesWrapper.classList.add('custom-modules-wrapper')
+
+    const dropDownDivider = document.createElement('div')
+    dropDownDivider.classList.add('dropdown-divider')
+    customModulesWrapper.appendChild(dropDownDivider)
+
+    // moduleMenuElementList ist ein Array, in das die Menüpunkte vorerst hineingefügt werden
+    const moduleMenuElementList = []
+
+    // eine Schleife, die über alle customModules läuft und sie nacheinander ins Menü packt
+    for (let i = 0; i < customModulesArray.length; i++) {
+      // moduleMenuElement ist das <a> Element für den aktuellen Menüpunkt
+      const moduleMenuElement = document.createElement('a')
+      moduleMenuElement.innerHTML = customModulesArray[i].name
+      moduleMenuElement.setAttribute('class', 'dropdown-item')
+      moduleMenuElement.setAttribute('href', '#')
+
+      // dem aktuelle <a>-Element wird die Funktionalität hinzugefügt, dass er beim Click ein neues Modul hinzufügt
+      moduleMenuElement.addEventListener('click', function () {
+      // die nächsten freien x-Positionen in den 2 Zeilen werden ermittelt
+        const nextFreeSpaces = getNextFreeSpace(moduleConfigData.modules[i].width)
+
+        if (nextFreeSpaces[0] <= nextFreeSpaces[1]) {
+          // Das Modul wird geladen und auf den nächst-freien Platz mit y=0 gesetzt
+          loadCustomModule(i, nextFreeSpaces[0], 0)
+        } else {
+          // Das Modul wird geladen und auf den nächst-freien Platz mit y=1 gesetzt
+          loadCustomModule(i, nextFreeSpaces[1], 1)
+        }
+      })
+
+      // das aktuelle <a>-Element wird der moduleMenuElementList hinzugefügt
+      moduleMenuElementList.push(moduleMenuElement)
+    }
+
+    // die moduleMenuElementList wird Alphabetisch nach dem Inhalt der <a>-Elemente sortiert
+    moduleMenuElementList.sort(function (a, b) {
+      if (a.innerHTML < b.innerHTML) {
+        return -1
+      }
+      if (a.innerHTML > b.innerHTML) {
+        return 1
+      }
+      return 0
+    })
+
+    // Eine Schleife über alle <a>-Elemente der moduleMenuElementList. Sie werden dem customModulesWrapper-DOM-Element hinzugefügt
+    for (let i = 0; i < moduleMenuElementList.length; i++) {
+      customModulesWrapper.appendChild(moduleMenuElementList[i])
+    }
+
+    // der customModulesWrapper wird dem addModuleMenuElement hinzugefügt
+    addModuleMenuElement.appendChild(customModulesWrapper)
+  }
 }
 
 // die function getNextFreeSpace erhält die width des neuen moduls und gibt ein Array mit zwei Zahlen zurück
@@ -319,6 +406,33 @@ function loadModule (index, placeX, placeY) {
 
   // die HTML-Datei des Modules wird tatsächlich geladen
   moduleHtmlXHR.send()
+}
+
+// diese Funktion lädt eines der CustomModules in das Grid
+function loadCustomModule (index, placeX, placeY) {
+  // newWidget ist das neue GridStack-Widget aus dem neuen Modul
+  const newWidget = mainGrid.addWidget({
+    w: customModulesArray[index].width,
+    h: 1,
+    x: placeX,
+    y: placeY,
+    noResize: true,
+    content: '<div class="module">' + customModulesArray[index].html + '</div>'
+  })
+
+  // newModuleObject speichert das neue Modul als Object
+  let newModuleObject = null
+  // newModuleElement speichert das neue Modul als DOM-Element
+  const newModuleElement = newWidget.getElementsByClassName('module')[0]
+
+  // das newModuleObject wird als CustomModule erstellt
+  newModuleObject = new CustomModule(audioContext, newModuleElement, customModulesArray[index].numOfInputs, customModulesArray[index].numOfOutputs, customModulesArray[index].function, customModulesArray[index].parameters)
+
+  // das neue newModuleObject wird in das moduleArray gesetzt
+  moduleArray.push(newModuleObject)
+
+  // Plugs und der Delete-Button werden für das neue Modul initialisiert
+  initModuleFunctions(newWidget, newModuleObject)
 }
 
 function initModuleFunctions (newWidget, newModuleObject) {
@@ -445,53 +559,20 @@ function initModuleFunctions (newWidget, newModuleObject) {
 
 // ------------- CREATE MODULE ----------------------------------------------------------------------------------------
 
-const createModuleHTML = '<button class="delete-button"><span class="material-icons">delete</span></button><h1 style="top: 3%; left: 50%;">NEUES<br>MODULE</h1><div class="plug" style="top: 45%; left: 31%;"><button class="plug-button index-0" type="in"></button><div><a class="plug-text">IN 1</a></div></div><div class="plug" style="top: 45%; left: 69%;"><button class="plug-button index-1" type="in"></button><div><a class="plug-text">IN 2</a></div></div><div class="plug" style="top: 65%; left: 31%;"><button class="plug-button index-0" type="out"></button><div><a class="plug-text">OUT 1</a></div></div><div class="plug" style="top: 65%; left: 69%;"><button class="plug-button index-1" type="out"></button><div><a class="plug-text">OUT 2</a></div></div><div class="plug" style="top: 82%; left: 50%;"><button class="plug-button index-2" type="out"></button><div><a class="plug-text">MIX</a></div></div>'
-const createModuleWidth = 3
-const cretaeModuleNumOfInputs = 2
-const cretaeModuleNumOfOutputs = 3
-const cretaeModuleProcessFunction = 'for (let i = 0; i < outputs[0].length; ++i) { if(inputs[0] === undefined && inputs[1] === undefined) { outputs[0][i] = 0; outputs[1][i] = 0; outputs[2][i] = 0; } else if (inputs[0] === undefined) { outputs[0][i] = 0; outputs[1][i] = inputs[1][i]; outputs[2][i] = inputs[1][i]; } else if (inputs[1] === undefined) { outputs[0][i] = inputs[0][i]; outputs[1][i] = 0; outputs[2][i] = inputs[0][i]; } else { outputs[0][i] = inputs[0][i]; outputs[1][i] = inputs[1][i]; outputs[2][i] = (inputs[0][i] + inputs[1][i]) / 2; }} return outputs;'
-
+// temporary
 const createModuleElement = document.getElementsByClassName('create-module')[0]
 createModuleElement.addEventListener('click', function () {
-  // die nächsten freien x-Positionen in den 2 Zeilen werden ermittelt
-  const nextFreeSpaces = getNextFreeSpace(createModuleWidth)
-  let newModuleX = 0
-  let newModuleY = 0
-
-  if (nextFreeSpaces[0] <= nextFreeSpaces[1]) {
-    // Das Modul wird geladen auf den nächst-freien Platz mit y=0 gesetzt
-    newModuleX = nextFreeSpaces[0]
-    newModuleY = 0
-  } else {
-    // Das Modul wird auf den nächst-freien Platz mit y=1 gesetzt
-    newModuleX = nextFreeSpaces[1]
-    newModuleY = 1
-  }
-
-  // newWidget ist das neue GridStack-Widget aus dem neuen Modul
-  const newWidget = mainGrid.addWidget({
-    w: createModuleWidth,
-    h: 1,
-    x: newModuleX,
-    y: newModuleY,
-    noResize: true,
-    // TEMP
-    content: '<div class="module">' + createModuleHTML + '</div>'
+  customModulesArray.push({
+    name: 'A Mixer',
+    html: '<button class="delete-button"><span class="material-icons">delete</span></button><h1 style="top: 3%; left: 50%;">NEUES<br>MODULE</h1><div class="rotary-knob" style="top: 17%; left: 31%;"><input type="range" class="input-knob" data-diameter="100px" data-src="./assets/knob_1.png" data-sprites="99" /><div><a class="input-text">GAIN</a></div></div><div class="rotary-knob" style="top: 17%; left: 69%;"><input type="range" class="input-knob" data-diameter="100px" data-src="./assets/knob_1.png" data-sprites="99" /><div><a class="input-text">MIX</a></div></div><div class="plug" style="top: 45%; left: 31%;"><button class="plug-button index-0" type="in"></button><div><a class="plug-text">IN 1</a></div></div><div class="plug" style="top: 45%; left: 69%;"><button class="plug-button index-1" type="in"></button><div><a class="plug-text">IN 2</a></div></div><div class="plug" style="top: 65%; left: 31%;"><button class="plug-button index-0" type="out"></button><div><a class="plug-text">OUT 1</a></div></div><div class="plug" style="top: 65%; left: 69%;"><button class="plug-button index-1" type="out"></button><div><a class="plug-text">OUT 2</a></div></div><div class="plug" style="top: 82%; left: 50%;"><button class="plug-button index-2" type="out"></button><div><a class="plug-text">MIX</a></div></div>',
+    width: 3,
+    numOfInputs: 2,
+    numOfOutputs: 3,
+    function: 'for (let i = 0; i < outputs[0].length; ++i) { if(inputs[0] === undefined && inputs[1] === undefined) { outputs[0][i] = 0; outputs[1][i] = 0; outputs[2][i] = 0; } else if (inputs[0] === undefined) { outputs[0][i] = 0; outputs[1][i] = inputs[1][i] * this.paramaterMap.get("gain").value; outputs[2][i] = inputs[1][i] * this.paramaterMap.get("gain").value; } else if (inputs[1] === undefined) { outputs[0][i] = inputs[0][i] * this.paramaterMap.get("gain").value; outputs[1][i] = 0; outputs[2][i] = inputs[0][i] * this.paramaterMap.get("gain").value; } else { outputs[0][i] = inputs[0][i] * this.paramaterMap.get("gain").value; outputs[1][i] = inputs[1][i] * this.paramaterMap.get("gain").value; outputs[2][i] = (inputs[0][i] * (1 - this.paramaterMap.get("mix").value) + inputs[1][i] * this.paramaterMap.get("mix").value) * this.paramaterMap.get("gain").value; }} return outputs;',
+    parameters: [{ name: 'gain', value: 0.8, minValue: 0, maxValue: 1, type: 'exp' }, { name: 'mix', value: 0.5, minValue: 0, maxValue: 1, type: 'lin' }]
   })
 
-  // newModuleObject speichert das neue Modul als Object
-  let newModuleObject = null
-  // newModuleElement speichert das neue Modul als DOM-Element
-  const newModuleElement = newWidget.getElementsByClassName('module')[0]
-
-  // das newModuleObject wird als CustomModule erstellt
-  newModuleObject = new CustomModule(audioContext, newModuleElement, cretaeModuleNumOfInputs, cretaeModuleNumOfOutputs, cretaeModuleProcessFunction)
-
-  // das neue newModuleObject wird in das moduleArray gesetzt
-  moduleArray.push(newModuleObject)
-
-  // Plugs und der Delete-Button werden für das neue Modul initialisiert
-  initModuleFunctions(newWidget, newModuleObject)
+  updateCustomModulesMenu()
 })
 
 // ------------- EVENTS -----------------------------------------------------------------------------------------------

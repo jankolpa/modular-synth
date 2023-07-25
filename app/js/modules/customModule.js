@@ -3,8 +3,8 @@
 import Module from './module.js'
 
 export default class CustomModule extends Module {
-  constructor (audioContext, moduleElement, moduleNumberOfInputs, moduleNumberOfOutputs, processFunction) {
-    super(moduleElement)
+  constructor (audioContext, moduleElement, moduleNumberOfInputs, moduleNumberOfOutputs, processFunction, parameters) {
+    super(moduleElement, parameters)
 
     this.audioContext = audioContext
     this.numberOfInputs = moduleNumberOfInputs
@@ -29,11 +29,27 @@ export default class CustomModule extends Module {
       outputChannelCount: preparedOutputChannels
     })
 
-    this.customNode.port.postMessage(this.ioAssignment)
-    this.customNode.port.postMessage(processFunction)
+    for (let i = 0; i < this.parameters.length; i++) {
+      this.customNode.port.postMessage(['initPara', this.parameters[i].name, this.parameters[i].value, this.parameters[i].minValue, this.parameters[i].maxValue])
+    }
+
+    this.customNode.port.postMessage(['io', this.ioAssignment])
+    this.customNode.port.postMessage(['fn', processFunction])
+
+    for (let i = 0; i < this.parameters.length; i++) {
+      this.sliderArray[i].value = this.mapValueToSlider(this.parameters[i].type, this.parameters[i].value, this.parameters[i].minValue, this.parameters[i].maxValue)
+    }
   }
 
   initModule () {
+    this.sliderArray = []
+    for (let i = 0; i < this.parameters.length; i++) {
+      this.sliderArray.push(this.moduleElement.getElementsByClassName('input-knob')[i])
+
+      this.sliderArray[i].oninput = function () {
+        this.customNode.port.postMessage(['updatePara', this.parameters[i].name, this.mapSliderToValue(this.parameters[i].type, this.sliderArray[i].value, this.parameters[i].minValue, this.parameters[i].maxValue)])
+      }.bind(this)
+    }
   }
 
   getNodeFromInput () {
@@ -42,24 +58,24 @@ export default class CustomModule extends Module {
 
   connectInput (endInput) {
     this.ioAssignment[0][endInput] = true
-    this.customNode.port.postMessage(this.ioAssignment)
+    this.customNode.port.postMessage(['io', this.ioAssignment])
   }
 
   connectOutput (endModule, startOutput, endInput) {
     this.customNode.connect(endModule.getNodeFromInput(endInput), startOutput, endModule.getInputNumber(endInput))
     this.ioAssignment[1][startOutput] = true
-    this.customNode.port.postMessage(this.ioAssignment)
+    this.customNode.port.postMessage(['io', this.ioAssignment])
   }
 
   disconnectInput (endInput) {
     this.ioAssignment[0][endInput] = false
-    this.customNode.port.postMessage(this.ioAssignment)
+    this.customNode.port.postMessage(['io', this.ioAssignment])
   }
 
   disconnectOutput (endModule, startOutput, endInput) {
     this.customNode.disconnect(endModule.getNodeFromInput(endInput), startOutput, endModule.getInputNumber(endInput))
     this.ioAssignment[1][startOutput] = false
-    this.customNode.port.postMessage(this.ioAssignment)
+    this.customNode.port.postMessage(['io', this.ioAssignment])
   }
 
   deleteNode () {

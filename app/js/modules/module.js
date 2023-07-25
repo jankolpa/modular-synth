@@ -1,8 +1,9 @@
 'use strict'
 
 export default class Module {
-  constructor (moduleElement) {
+  constructor (moduleElement, parameters) {
     this.moduleElement = moduleElement
+    if (parameters !== undefined) { this.parameters = parameters }
     this.initModule()
   }
 

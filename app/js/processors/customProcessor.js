@@ -17,25 +17,40 @@ class CustomProcessor extends AudioWorkletProcessor {
     this.ioAssignment = null
     this.numberOfInputs = 0
     this.numberOfOutputs = 0
-
     this.processFunction = null
+
+    this.paramaterMap = new Map()
 
     this.port.onmessage = (e) => {
       if (e.data === 'killProzess') {
         this.running = false
       } else if (e.data instanceof Array) {
-        if (e.data.length === 2) {
+        if (e.data[0] === 'io') {
           if (this.ioAssignment === null) {
-            this.ioAssignment = e.data
+            this.ioAssignment = e.data[1]
             this.numberOfInputs = this.ioAssignment[0].length
             this.numberOfOutputs = this.ioAssignment[1].length
           } else {
-            this.ioAssignment = e.data
+            this.ioAssignment = e.data[1]
+          }
+        } else if (e.data[0] === 'fn') {
+          // eslint-disable-next-line no-new-func
+          this.processFunction = Function('inputs', 'outputs', 'parameterMap', String(e.data[1]))
+        } else if (e.data[0] === 'initPara') {
+          // eslint-disable-next-line no-new-func
+          this.paramaterMap.set(e.data[1], { value: e.data[2], minValue: e.data[3], maxValue: e.data[4] })
+        } else if (e.data[0] === 'updatePara') {
+          // eslint-disable-next-line no-new-func
+          this.paramaterMap.get(e.data[1]).value = e.data[2]
+          if (this.paramaterMap.get(e.data[1]).value < this.paramaterMap.get(e.data[1]).minValue) {
+            this.paramaterMap.get(e.data[1]).value = this.paramaterMap.get(e.data[1]).minValue
+          } else if ((this.paramaterMap.get(e.data[1]).value > this.paramaterMap.get(e.data[1]).maxValue)) {
+            this.paramaterMap.get(e.data[1]).value = this.paramaterMap.get(e.data[1]).maxValue
           }
         }
       } else {
-        // eslint-disable-next-line no-new-func
-        this.processFunction = Function('inputs', 'outputs', 'parameters', String(e.data))
+        console.log('no functionality for message:')
+        console.log(e.data)
       }
     }
   }
@@ -73,7 +88,7 @@ class CustomProcessor extends AudioWorkletProcessor {
       preparedOutputs.push(outputs[i][0])
     }
 
-    const processFunctionOutputs = this.processFunction(preparedInputs, preparedOutputs, parameters)
+    const processFunctionOutputs = this.processFunction(preparedInputs, preparedOutputs, this.paramaterMap)
 
     for (let i = 0; i < this.numberOfOutputs; i++) {
       outputs[i][0].set(processFunctionOutputs[i])
