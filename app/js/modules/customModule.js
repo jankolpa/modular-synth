@@ -43,8 +43,9 @@ export default class CustomModule extends Module {
 
   initModule () {
     this.sliderArray = []
-    for (let i = 0; i < this.parameters.length; i++) {
-      this.sliderArray.push(this.moduleElement.getElementsByClassName('input-knob')[i])
+    const inputKnobElements = this.moduleElement.getElementsByClassName('input-knob')
+    for (let i = 0; i < inputKnobElements.length; i++) {
+      this.sliderArray.push(inputKnobElements[i])
 
       this.sliderArray[i].oninput = function () {
         this.customNode.port.postMessage(['updatePara', this.parameters[i].name, this.mapSliderToValue(this.parameters[i].type, this.sliderArray[i].value, this.parameters[i].minValue, this.parameters[i].maxValue)])

@@ -50,11 +50,20 @@ const customModulesArray = []
 // temporary
 customModulesArray.push({
   name: 'Module Mixer',
-  html: '<button class="delete-button"><span class="material-icons">delete</span></button><h1 style="top: 3%; left: 50%;">NEUES<br>MODULE</h1><div class="rotary-knob" style="top: 17%; left: 31%;"><input type="range" class="input-knob" data-diameter="100px" data-src="./assets/knob_1.png" data-sprites="99" /><div><a class="input-text">GAIN</a></div></div><div class="rotary-knob" style="top: 17%; left: 69%;"><input type="range" class="input-knob" data-diameter="100px" data-src="./assets/knob_1.png" data-sprites="99" /><div><a class="input-text">MIX</a></div></div><div class="plug" style="top: 45%; left: 31%;"><button class="plug-button index-0" type="in"></button><div><a class="plug-text">IN 1</a></div></div><div class="plug" style="top: 45%; left: 69%;"><button class="plug-button index-1" type="in"></button><div><a class="plug-text">IN 2</a></div></div><div class="plug" style="top: 65%; left: 31%;"><button class="plug-button index-0" type="out"></button><div><a class="plug-text">OUT 1</a></div></div><div class="plug" style="top: 65%; left: 69%;"><button class="plug-button index-1" type="out"></button><div><a class="plug-text">OUT 2</a></div></div><div class="plug" style="top: 82%; left: 50%;"><button class="plug-button index-2" type="out"></button><div><a class="plug-text">MIX</a></div></div>',
+  html: '<button class="delete-button"><span class="material-icons">delete</span></button>\n\n<h1 style="top: 3%; left: 50%;">NEUES<br>MODULE</h1>\n\n<div class="rotary-knob" style="top: 17%; left: 31%;">\n\t<input type="range" class="input-knob" data-diameter="100px" data-src="./assets/knob_1.png" data-sprites="99" />\n\t<div><a class="input-text">GAIN</a></div>\n</div>\n\n<div class="rotary-knob" style="top: 17%; left: 69%;">\n\t<input type="range" class="input-knob" data-diameter="100px" data-src="./assets/knob_1.png" data-sprites="99" />\n\t<div><a class="input-text">MIX</a></div>\n</div>\n\n<div class="plug" style="top: 45%; left: 31%;">\n\t<button class="plug-button index-0" type="in"></button>\n\t<div><a class="plug-text">IN 1</a></div>\n</div>\n\n<div class="plug" style="top: 45%; left: 69%;">\n\t<button class="plug-button index-1" type="in"></button>\n\t<div><a class="plug-text">IN 2</a></div>\n</div>\n\n<div class="plug" style="top: 65%; left: 31%;">\n\t<button class="plug-button index-0" type="out"></button>\n\t<div><a class="plug-text">OUT 1</a></div>\n</div>\n\n<div class="plug" style="top: 65%; left: 69%;">\n\t<button class="plug-button index-1" type="out"></button>\n\t<div><a class="plug-text">OUT 2</a></div>\n</div>\n\n<div class="plug" style="top: 82%; left: 50%;">\n\t<button class="plug-button index-2" type="out"></button>\n\t<div><a class="plug-text">MIX</a></div>\n</div>',
   width: 3,
   numOfInputs: 2,
   numOfOutputs: 3,
-  function: 'for (let i = 0; i < outputs[0].length; ++i) { if(inputs[0] === undefined && inputs[1] === undefined) { outputs[0][i] = 0; outputs[1][i] = 0; outputs[2][i] = 0; } else if (inputs[0] === undefined) { outputs[0][i] = 0; outputs[1][i] = inputs[1][i] * this.paramaterMap.get("gain").value; outputs[2][i] = inputs[1][i] * this.paramaterMap.get("gain").value; } else if (inputs[1] === undefined) { outputs[0][i] = inputs[0][i] * this.paramaterMap.get("gain").value; outputs[1][i] = 0; outputs[2][i] = inputs[0][i] * this.paramaterMap.get("gain").value; } else { outputs[0][i] = inputs[0][i] * this.paramaterMap.get("gain").value; outputs[1][i] = inputs[1][i] * this.paramaterMap.get("gain").value; outputs[2][i] = (inputs[0][i] * (1 - this.paramaterMap.get("mix").value) + inputs[1][i] * this.paramaterMap.get("mix").value) * this.paramaterMap.get("gain").value; }} return outputs;',
+  function: 'for (let i = 0; i < outputs[0].length; ++i) {\n\tif(inputs[0] === undefined && inputs[1] === undefined) {\n\t\toutputs[0][i] = 0;\n\t\toutputs[1][i] = 0;\n\t\toutputs[2][i] = 0;\n\t} else if (inputs[0] === undefined) {\n\t\toutputs[0][i] = 0;\n\t\toutputs[1][i] = inputs[1][i] * this.paramaterMap.get("gain").value;\n\t\toutputs[2][i] = inputs[1][i] * this.paramaterMap.get("gain").value;\n\t} else if (inputs[1] === undefined) {\n\t\toutputs[0][i] = inputs[0][i] * this.paramaterMap.get("gain").value;\n\t\toutputs[1][i] = 0;\n\t\toutputs[2][i] = inputs[0][i] * this.paramaterMap.get("gain").value;\n\t} else {\n\t\toutputs[0][i] = inputs[0][i] * this.paramaterMap.get("gain").value;\n\t\toutputs[1][i] = inputs[1][i] * this.paramaterMap.get("gain").value;\n\t\toutputs[2][i] = (inputs[0][i] * (1 - this.paramaterMap.get("mix").value) + inputs[1][i] * this.paramaterMap.get("mix").value) * this.paramaterMap.get("gain").value;\n\t}\n}\nreturn outputs;',
+  parameters: [{ name: 'gain', value: 0.8, minValue: 0, maxValue: 1, type: 'exp' }, { name: 'mix', value: 0.5, minValue: 0, maxValue: 1, type: 'lin' }]
+})
+customModulesArray.push({
+  name: 'Nodule Nixer',
+  html: 'testHTML',
+  width: 30,
+  numOfInputs: 20,
+  numOfOutputs: 30,
+  function: 'test JS',
   parameters: [{ name: 'gain', value: 0.8, minValue: 0, maxValue: 1, type: 'exp' }, { name: 'mix', value: 0.5, minValue: 0, maxValue: 1, type: 'lin' }]
 })
 
@@ -559,27 +568,157 @@ function initModuleFunctions (newWidget, newModuleObject) {
 
 // ------------- CREATE MODULE ----------------------------------------------------------------------------------------
 
+let moduleDropdownCurrent = -1
 const moduleEditorElement = document.getElementsByClassName('module-editor')[0]
 const createModuleButtonElement = document.getElementsByClassName('create-module')[0]
 createModuleButtonElement.addEventListener('click', function () {
-  // temporary
-  customModulesArray.push({
-    name: 'A Mixer',
-    html: '<button class="delete-button"><span class="material-icons">delete</span></button><h1 style="top: 3%; left: 50%;">NEUES<br>MODULE</h1><div class="rotary-knob" style="top: 17%; left: 31%;"><input type="range" class="input-knob" data-diameter="100px" data-src="./assets/knob_1.png" data-sprites="99" /><div><a class="input-text">GAIN</a></div></div><div class="rotary-knob" style="top: 17%; left: 69%;"><input type="range" class="input-knob" data-diameter="100px" data-src="./assets/knob_1.png" data-sprites="99" /><div><a class="input-text">MIX</a></div></div><div class="plug" style="top: 45%; left: 31%;"><button class="plug-button index-0" type="in"></button><div><a class="plug-text">IN 1</a></div></div><div class="plug" style="top: 45%; left: 69%;"><button class="plug-button index-1" type="in"></button><div><a class="plug-text">IN 2</a></div></div><div class="plug" style="top: 65%; left: 31%;"><button class="plug-button index-0" type="out"></button><div><a class="plug-text">OUT 1</a></div></div><div class="plug" style="top: 65%; left: 69%;"><button class="plug-button index-1" type="out"></button><div><a class="plug-text">OUT 2</a></div></div><div class="plug" style="top: 82%; left: 50%;"><button class="plug-button index-2" type="out"></button><div><a class="plug-text">MIX</a></div></div>',
-    width: 3,
-    numOfInputs: 2,
-    numOfOutputs: 3,
-    function: 'for (let i = 0; i < outputs[0].length; ++i) { if(inputs[0] === undefined && inputs[1] === undefined) { outputs[0][i] = 0; outputs[1][i] = 0; outputs[2][i] = 0; } else if (inputs[0] === undefined) { outputs[0][i] = 0; outputs[1][i] = inputs[1][i] * this.paramaterMap.get("gain").value; outputs[2][i] = inputs[1][i] * this.paramaterMap.get("gain").value; } else if (inputs[1] === undefined) { outputs[0][i] = inputs[0][i] * this.paramaterMap.get("gain").value; outputs[1][i] = 0; outputs[2][i] = inputs[0][i] * this.paramaterMap.get("gain").value; } else { outputs[0][i] = inputs[0][i] * this.paramaterMap.get("gain").value; outputs[1][i] = inputs[1][i] * this.paramaterMap.get("gain").value; outputs[2][i] = (inputs[0][i] * (1 - this.paramaterMap.get("mix").value) + inputs[1][i] * this.paramaterMap.get("mix").value) * this.paramaterMap.get("gain").value; }} return outputs;',
-    parameters: [{ name: 'gain', value: 0.8, minValue: 0, maxValue: 1, type: 'exp' }, { name: 'mix', value: 0.5, minValue: 0, maxValue: 1, type: 'lin' }]
-  })
-
-  updateCustomModulesMenu()
   moduleEditorElement.classList.add('move-up')
 })
 
 const moduleEditorCloseElement = document.getElementsByClassName('editor-close-button')[0]
 moduleEditorCloseElement.addEventListener('click', function () {
   moduleEditorElement.classList.remove('move-up')
+})
+
+const codeAreaElements = document.getElementsByClassName('code-area')
+for (let i = 0; i < codeAreaElements.length; i++) {
+  codeAreaElements[i].addEventListener('keydown', (e) => {
+    if (e.keyCode === 9) {
+      e.preventDefault()
+
+      codeAreaElements[i].setRangeText(
+        '\t',
+        codeAreaElements[i].selectionStart,
+        codeAreaElements[i].selectionStart,
+        'end'
+      )
+    }
+  })
+}
+
+const moduleDropdownElement = document.getElementsByClassName('create-module-dropdown')[0]
+moduleDropdownElement.addEventListener('change', (event) => {
+  const moduleEditorButton = document.getElementsByClassName('create-module-button')[0]
+  moduleEditorButton.value = 'Create Module'
+
+  let newName = 'Module Name'
+  let newWidth = null
+  let newInputs = null
+  let newOutputs = null
+  let newHTML = ''
+  let newJS = ''
+  moduleDropdownCurrent = -1
+
+  const parameterListElement = document.getElementsByClassName('parameter-list')[0]
+  parameterListElement.innerHTML = ''
+
+  if (event.target.value !== '[create new]') {
+    const index = parseInt(event.target.value.substring(0, 2)) - 1
+    newName = customModulesArray[index].name
+    newWidth = customModulesArray[index].width
+    newInputs = customModulesArray[index].numOfInputs
+    newOutputs = customModulesArray[index].numOfOutputs
+    newHTML = customModulesArray[index].html
+    newJS = customModulesArray[index].function
+
+    moduleEditorButton.value = 'Update Module'
+    moduleDropdownCurrent = index
+
+    for (let i = 0; i < customModulesArray[index].parameters.length; i++) {
+      const newParamaterLI = document.createElement('li')
+      newParamaterLI.setAttribute('class', 'list-group-item form-inline p-2 w-1')
+      newParamaterLI.innerHTML = 'Name: <input required type="text" class="form-control parameter-input-name mr-1 d-inline parameter-name" placeholder=""> Value: <input required type="number" step="0.001" class="form-control parameter-input-number mr-1 d-inline parameter-value" placeholder=""> Min: <input required type="number" step="0.001" class="form-control parameter-input-number mr-1 d-inline  parameter-min" placeholder=""> Max: <input required type="number" step="0.001" class="form-control parameter-input-number mr-1 d-inline parameter-max" placeholder=""> Type: <select required class="form-control mr-1 parameter-input-type d-inline"><option>lin</option><option>exp</option><option>log</option></select> <button class="btn btn-secondary pt-1 pl-1 pr-1 pb-0 align-middle float-right"><span class="material-icons">delete</span></button>'
+      newParamaterLI.getElementsByTagName('button')[0].addEventListener('click', (e) => {
+        if (e.button === 0) {
+          e.target.parentElement.parentElement.remove()
+        }
+      })
+      newParamaterLI.getElementsByClassName('parameter-name')[0].value = customModulesArray[index].parameters[i].name
+      newParamaterLI.getElementsByClassName('parameter-value')[0].value = customModulesArray[index].parameters[i].value
+      newParamaterLI.getElementsByClassName('parameter-min')[0].value = customModulesArray[index].parameters[i].minValue
+      newParamaterLI.getElementsByClassName('parameter-max')[0].value = customModulesArray[index].parameters[i].maxValue
+      newParamaterLI.getElementsByClassName('parameter-input-type')[0].value = customModulesArray[index].parameters[i].type
+      parameterListElement.appendChild(newParamaterLI)
+    }
+  }
+
+  document.getElementsByClassName('create-module-name')[0].value = newName
+  document.getElementsByClassName('create-module-width')[0].value = newWidth
+  document.getElementsByClassName('create-module-inputs')[0].value = newInputs
+  document.getElementsByClassName('create-module-outputs')[0].value = newOutputs
+  document.getElementsByClassName('create-module-html')[0].value = newHTML
+  document.getElementsByClassName('create-module-js')[0].value = newJS
+})
+
+editModuleDropdownMenu()
+function editModuleDropdownMenu () {
+  moduleDropdownElement.innerHTML = ''
+  const optionCreate = document.createElement('option')
+  optionCreate.innerHTML = '[create new]'
+  moduleDropdownElement.add(optionCreate)
+
+  for (let i = 0; i < customModulesArray.length; i++) {
+    const option = document.createElement('option')
+    option.text = (i + 1).toString().padStart(2, '0') + ' - ' + customModulesArray[i].name
+    moduleDropdownElement.add(option)
+  }
+}
+
+// eslint-disable-next-line space-before-function-paren, no-unused-vars
+document.getElementsByClassName('creator-form')[0].addEventListener('submit', (e) => {
+  e.preventDefault()
+  const parameterElements = document.getElementsByClassName('parameter-list')[0].children
+  const newParameters = []
+  for (let i = 0; i < parameterElements.length; i++) {
+    newParameters.push({
+      name: '' + parameterElements[i].getElementsByClassName('parameter-name')[0].value,
+      value: parseFloat(parameterElements[i].getElementsByClassName('parameter-value')[0].value),
+      minValue: parseFloat(parameterElements[i].getElementsByClassName('parameter-min')[0].value),
+      maxValue: parseFloat(parameterElements[i].getElementsByClassName('parameter-max')[0].value),
+      type: parameterElements[i].getElementsByClassName('parameter-input-type')[0].value
+    })
+  }
+
+  if (moduleDropdownCurrent !== -1) {
+    customModulesArray[moduleDropdownCurrent].name = '' + document.getElementsByClassName('create-module-name')[0].value
+    customModulesArray[moduleDropdownCurrent].width = parseInt(document.getElementsByClassName('create-module-width')[0].value)
+    customModulesArray[moduleDropdownCurrent].numOfInputs = parseInt(document.getElementsByClassName('create-module-inputs')[0].value)
+    customModulesArray[moduleDropdownCurrent].numOfOutputs = parseInt(document.getElementsByClassName('create-module-outputs')[0].value)
+    customModulesArray[moduleDropdownCurrent].html = '' + document.getElementsByClassName('create-module-html')[0].value
+    customModulesArray[moduleDropdownCurrent].function = '' + document.getElementsByClassName('create-module-js')[0].value
+    customModulesArray[moduleDropdownCurrent].parameters = newParameters
+  } else {
+    customModulesArray.push({
+      name: '' + document.getElementsByClassName('create-module-name')[0].value,
+      html: '' + document.getElementsByClassName('create-module-html')[0].value,
+      width: document.getElementsByClassName('create-module-width')[0].value,
+      numOfInputs: document.getElementsByClassName('create-module-inputs')[0].value,
+      numOfOutputs: document.getElementsByClassName('create-module-outputs')[0].value,
+      function: '' + document.getElementsByClassName('create-module-js')[0].value,
+      parameters: newParameters
+    })
+    editModuleDropdownMenu()
+    updateCustomModulesMenu()
+
+    moduleDropdownElement.value = moduleDropdownElement.childNodes[moduleDropdownElement.childNodes.length - 1].value
+    moduleDropdownCurrent = moduleDropdownElement.childNodes.length - 2
+    document.getElementsByClassName('create-module-button')[0].value = 'Update Module'
+  }
+})
+
+document.getElementsByClassName('create-module-parameter')[0].addEventListener('click', (e) => {
+  if (e.button === 0) {
+    const parameterListElement = document.getElementsByClassName('parameter-list')[0]
+    const newParamaterLI = document.createElement('li')
+    newParamaterLI.setAttribute('class', 'list-group-item form-inline p-2 w-1')
+    newParamaterLI.innerHTML = 'Name: <input required type="text" class="form-control parameter-input-name mr-1 d-inline parameter-name" placeholder=""> Value: <input required type="number" step="0.001" class="form-control parameter-input-number mr-1 d-inline parameter-value" placeholder=""> Min: <input required type="number" step="0.001" class="form-control parameter-input-number mr-1 d-inline  parameter-min" placeholder=""> Max: <input required type="number" step="0.001" class="form-control parameter-input-number mr-1 d-inline parameter-max" placeholder=""> Type: <select required class="form-control mr-1 parameter-input-type d-inline"><option>lin</option><option>exp</option><option>log</option></select> <button class="btn btn-secondary pt-1 pl-1 pr-1 pb-0 align-middle float-right"><span class="material-icons">delete</span></button>'
+    newParamaterLI.getElementsByTagName('button')[0].addEventListener('click', (e) => {
+      if (e.button === 0) {
+        e.target.parentElement.parentElement.remove()
+      }
+    })
+    parameterListElement.appendChild(newParamaterLI)
+  }
 })
 
 // ------------- EVENTS -----------------------------------------------------------------------------------------------
@@ -765,4 +904,10 @@ addEventListener('mouseup', (event) => {
       }
     }
   }
+})
+
+// eslint-disable-next-line no-undef
+$(function () {
+  // eslint-disable-next-line no-undef
+  $('[data-toggle="popover"]').popover()
 })
