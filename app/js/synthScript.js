@@ -559,9 +559,10 @@ function initModuleFunctions (newWidget, newModuleObject) {
 
 // ------------- CREATE MODULE ----------------------------------------------------------------------------------------
 
-// temporary
-const createModuleElement = document.getElementsByClassName('create-module')[0]
-createModuleElement.addEventListener('click', function () {
+const moduleEditorElement = document.getElementsByClassName('module-editor')[0]
+const createModuleButtonElement = document.getElementsByClassName('create-module')[0]
+createModuleButtonElement.addEventListener('click', function () {
+  // temporary
   customModulesArray.push({
     name: 'A Mixer',
     html: '<button class="delete-button"><span class="material-icons">delete</span></button><h1 style="top: 3%; left: 50%;">NEUES<br>MODULE</h1><div class="rotary-knob" style="top: 17%; left: 31%;"><input type="range" class="input-knob" data-diameter="100px" data-src="./assets/knob_1.png" data-sprites="99" /><div><a class="input-text">GAIN</a></div></div><div class="rotary-knob" style="top: 17%; left: 69%;"><input type="range" class="input-knob" data-diameter="100px" data-src="./assets/knob_1.png" data-sprites="99" /><div><a class="input-text">MIX</a></div></div><div class="plug" style="top: 45%; left: 31%;"><button class="plug-button index-0" type="in"></button><div><a class="plug-text">IN 1</a></div></div><div class="plug" style="top: 45%; left: 69%;"><button class="plug-button index-1" type="in"></button><div><a class="plug-text">IN 2</a></div></div><div class="plug" style="top: 65%; left: 31%;"><button class="plug-button index-0" type="out"></button><div><a class="plug-text">OUT 1</a></div></div><div class="plug" style="top: 65%; left: 69%;"><button class="plug-button index-1" type="out"></button><div><a class="plug-text">OUT 2</a></div></div><div class="plug" style="top: 82%; left: 50%;"><button class="plug-button index-2" type="out"></button><div><a class="plug-text">MIX</a></div></div>',
@@ -573,6 +574,12 @@ createModuleElement.addEventListener('click', function () {
   })
 
   updateCustomModulesMenu()
+  moduleEditorElement.classList.add('move-up')
+})
+
+const moduleEditorCloseElement = document.getElementsByClassName('editor-close-button')[0]
+moduleEditorCloseElement.addEventListener('click', function () {
+  moduleEditorElement.classList.remove('move-up')
 })
 
 // ------------- EVENTS -----------------------------------------------------------------------------------------------

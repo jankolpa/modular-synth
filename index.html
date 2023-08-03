@@ -35,7 +35,6 @@
 
 <body>
 
-
   <div id="top-bar">
     <nav class="navbar navbar-expand navbar-light bg-white">
       <a class="navbar-brand">MODULAR SYNTH</a>
@@ -70,7 +69,11 @@
 
   <svg id="line-canvas" version="1.1" xmlns="http://www.w3.org/2000/svg"></svg>
 
-  <script type="module" src="dist/script.js"></script>
+  <div class="module-editor">
+    <button class="editor-close-button"><span class="material-icons">close</span></button>
+  </div>
+
+  <script type="module" src="dist/synthScript.js"></script>
 </body>
 
 </html>
