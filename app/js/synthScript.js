@@ -967,6 +967,11 @@ addEventListener('mouseup', (event) => {
   }
 })
 
+document.getElementsByClassName('grid-stack')[0].addEventListener('wheel', (e) => {
+  e.preventDefault()
+  window.scrollBy(e.deltaY / 3, 0)
+})
+
 // eslint-disable-next-line no-undef
 $(function () {
   // eslint-disable-next-line no-undef
