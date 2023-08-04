@@ -145,11 +145,11 @@ class EnvProcessor extends AudioWorkletProcessor {
     const output1 = outputs[0]
     const output1Channel = output1[0]
 
-    if (this.open === false && input5Channel[0] === 1) {
+    if (this.open === false && input5Channel[0] > 0.85) {
       this.open = true
       this.lastOpen = currentTime
     }
-    if (this.open === true && input5Channel[0] === 0) {
+    if (this.open === true && input5Channel[0] < 0.15) {
       this.open = false
       this.lastClose = currentTime
     }

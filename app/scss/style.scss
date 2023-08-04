@@ -102,7 +102,7 @@ body {
         height: 100%;
         border: black 2px solid;
         box-sizing: border-box;
-        opacity: .3;
+        opacity: .6;
         pointer-events: none;
     }
 }
@@ -198,7 +198,7 @@ $columns: 50;
                 transform: translate(-50%);
                 font-size: calc($module-size-px / 40);
                 pointer-events: none;
-                opacity: 0.75;
+                opacity: 0.9;
                 font-weight: bold;
             }
         }
@@ -255,7 +255,7 @@ $columns: 50;
                 transform: translate(-50%);
                 font-size: calc($module-size-px / 40);
                 pointer-events: none;
-                opacity: 0.75;
+                opacity: .9;
                 font-weight: bold;
             }
         }
@@ -338,7 +338,7 @@ $columns: 50;
                 transform: translate(-50%);
                 font-size: calc($module-size-px / 40);
                 pointer-events: none;
-                opacity: 0.75;
+                opacity: 0.9;
                 font-weight: bold;
             }
         }
