@@ -3,8 +3,8 @@
 import Module from './module.js'
 
 export default class ClockModule extends Module {
-  constructor (audioContext, moduleElement) {
-    super(moduleElement)
+  constructor (audioContext, moduleElement, widget) {
+    super(moduleElement, widget)
 
     this.audioContext = audioContext
     this.numberOfInputs = 1

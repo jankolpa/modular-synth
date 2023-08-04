@@ -428,7 +428,7 @@ $columns: 50;
     max-width: 900px;
     height: calc((100vh - $top-bar-height - $scroll-bar-height) + 6px);
     background-color: white;
-    z-index: 100;
+    z-index: 101;
     transition: right .5s ease;
     padding: 1em;
     box-shadow: -7px 0 11px -8px rgba($color: black, $alpha: 30%);
@@ -439,7 +439,7 @@ $columns: 50;
         right: -200px;
         padding-top: 6px;
         transition: right .3s ease;
-        z-index: 101;
+        z-index: 102;
     }
 
     &.move-up {
@@ -477,7 +477,6 @@ $columns: 50;
         resize: none;
         background: none;
         background-color: #f0f0f0 !important;
-        font-weight: bold;
         padding-left: 12px;
     }
 

@@ -49,22 +49,24 @@ document.head.appendChild(gridResizeStyle)
 const customModulesArray = []
 // temporary
 customModulesArray.push({
-  name: 'Module Mixer',
-  html: '<button class="delete-button"><span class="material-icons">delete</span></button>\n\n<h1 style="top: 3%; left: 50%;">NEUES<br>MODULE</h1>\n\n<div class="rotary-knob" style="top: 17%; left: 31%;">\n\t<input type="range" class="input-knob" data-diameter="100px" data-src="./assets/knob_1.png" data-sprites="99" />\n\t<div><a class="input-text">GAIN</a></div>\n</div>\n\n<div class="rotary-knob" style="top: 17%; left: 69%;">\n\t<input type="range" class="input-knob" data-diameter="100px" data-src="./assets/knob_1.png" data-sprites="99" />\n\t<div><a class="input-text">MIX</a></div>\n</div>\n\n<div class="plug" style="top: 45%; left: 31%;">\n\t<button class="plug-button index-0" type="in"></button>\n\t<div><a class="plug-text">IN 1</a></div>\n</div>\n\n<div class="plug" style="top: 45%; left: 69%;">\n\t<button class="plug-button index-1" type="in"></button>\n\t<div><a class="plug-text">IN 2</a></div>\n</div>\n\n<div class="plug" style="top: 65%; left: 31%;">\n\t<button class="plug-button index-0" type="out"></button>\n\t<div><a class="plug-text">OUT 1</a></div>\n</div>\n\n<div class="plug" style="top: 65%; left: 69%;">\n\t<button class="plug-button index-1" type="out"></button>\n\t<div><a class="plug-text">OUT 2</a></div>\n</div>\n\n<div class="plug" style="top: 82%; left: 50%;">\n\t<button class="plug-button index-2" type="out"></button>\n\t<div><a class="plug-text">MIX</a></div>\n</div>',
+  name: 'Custom Mixer',
+  html: '<h1 style="top: 3%; left: 50%;">NEUES<br>MODULE</h1>\n\n<div class="rotary-knob" style="top: 17%; left: 31%;">\n\t<input type="range" class="input-knob" data-diameter="100px" data-src="./assets/knob_1.png" data-sprites="99" />\n\t<div><a class="input-text">GAIN</a></div>\n</div>\n\n<div class="rotary-knob" style="top: 17%; left: 69%;">\n\t<input type="range" class="input-knob" data-diameter="100px" data-src="./assets/knob_1.png" data-sprites="99" />\n\t<div><a class="input-text">MIX</a></div>\n</div>\n\n<div class="plug" style="top: 45%; left: 31%;">\n\t<button class="plug-button index-0" type="in"></button>\n\t<div><a class="plug-text">IN 1</a></div>\n</div>\n\n<div class="plug" style="top: 45%; left: 69%;">\n\t<button class="plug-button index-1" type="in"></button>\n\t<div><a class="plug-text">IN 2</a></div>\n</div>\n\n<div class="plug" style="top: 65%; left: 31%;">\n\t<button class="plug-button index-0" type="out"></button>\n\t<div><a class="plug-text">OUT 1</a></div>\n</div>\n\n<div class="plug" style="top: 65%; left: 69%;">\n\t<button class="plug-button index-1" type="out"></button>\n\t<div><a class="plug-text">OUT 2</a></div>\n</div>\n\n<div class="plug" style="top: 82%; left: 50%;">\n\t<button class="plug-button index-2" type="out"></button>\n\t<div><a class="plug-text">MIX</a></div>\n</div>',
   width: 3,
   numOfInputs: 2,
   numOfOutputs: 3,
   function: 'for (let i = 0; i < outputs[0].length; ++i) {\n\tif(inputs[0] === undefined && inputs[1] === undefined) {\n\t\toutputs[0][i] = 0;\n\t\toutputs[1][i] = 0;\n\t\toutputs[2][i] = 0;\n\t} else if (inputs[0] === undefined) {\n\t\toutputs[0][i] = 0;\n\t\toutputs[1][i] = inputs[1][i] * this.paramaterMap.get("gain").value;\n\t\toutputs[2][i] = inputs[1][i] * this.paramaterMap.get("gain").value;\n\t} else if (inputs[1] === undefined) {\n\t\toutputs[0][i] = inputs[0][i] * this.paramaterMap.get("gain").value;\n\t\toutputs[1][i] = 0;\n\t\toutputs[2][i] = inputs[0][i] * this.paramaterMap.get("gain").value;\n\t} else {\n\t\toutputs[0][i] = inputs[0][i] * this.paramaterMap.get("gain").value;\n\t\toutputs[1][i] = inputs[1][i] * this.paramaterMap.get("gain").value;\n\t\toutputs[2][i] = (inputs[0][i] * (1 - this.paramaterMap.get("mix").value) + inputs[1][i] * this.paramaterMap.get("mix").value) * this.paramaterMap.get("gain").value;\n\t}\n}\nreturn outputs;',
-  parameters: [{ name: 'gain', value: 0.8, minValue: 0, maxValue: 1, type: 'exp' }, { name: 'mix', value: 0.5, minValue: 0, maxValue: 1, type: 'lin' }]
+  parameters: [{ name: 'gain', value: 0.8, minValue: 0, maxValue: 1, type: 'exp' }, { name: 'mix', value: 0.5, minValue: 0, maxValue: 1, type: 'lin' }],
+  id: 0
 })
 customModulesArray.push({
-  name: 'Nodule Nixer',
-  html: 'testHTML',
-  width: 30,
-  numOfInputs: 20,
-  numOfOutputs: 30,
-  function: 'test JS',
-  parameters: [{ name: 'gain', value: 0.8, minValue: 0, maxValue: 1, type: 'exp' }, { name: 'mix', value: 0.5, minValue: 0, maxValue: 1, type: 'lin' }]
+  name: 'Empty Module',
+  html: '<h1 style="top: 3%; left: 50%;">EMPTY<br>MODULE</h1>\n\n<div class="plug" style="top: 30%; left: 50%;">\n\t<button class="plug-button index-0" type="in"></button>\n\t<div><a class="plug-text">IN</a></div>\n</div>\n\n<div class="plug" style="top: 55%; left: 50%;">\n\t<button class="plug-button index-0" type="out"></button>\n\t<div><a class="plug-text">OUT</a></div>\n</div>\n',
+  width: 2,
+  numOfInputs: 1,
+  numOfOutputs: 1,
+  function: 'for (let i = 0; i < outputs[0].length; ++i) {\n\tif(inputs[0] === undefined) {\n\t\toutputs[0][i] = 0;\n\t} else {\n\t\toutputs[0][i] = inputs[0][i];\n\t}\n}\nreturn outputs;',
+  parameters: [],
+  id: 1
 })
 
 // ------------- INIT GRID --------------------------------------------------------------------------------------------
@@ -330,7 +332,6 @@ function getNextFreeSpace (width) {
   let nextSpaceY0 = 0
   let nextSpaceY1 = 0
   mainGrid.engine.nodes.forEach(node => {
-    console.log()
     if (node.y === 0 && (node.x - nextSpaceY0) < width && (node.x + node.w) > nextSpaceY0) {
       nextSpaceY0 = node.x + node.w
     } else if (node.y === 1 && (node.x - nextSpaceY1) < width && (node.x + node.w) > nextSpaceY1) {
@@ -372,34 +373,34 @@ function loadModule (index, placeX, placeY) {
       // das newModuleObject wird je nach ID der moduleConfig.json-Datei erstellt
       switch (moduleConfigData.modules[index].id) {
         case 'vcoModule':
-          newModuleObject = new VcoModule(audioContext, newModuleElement)
+          newModuleObject = new VcoModule(audioContext, newModuleElement, newWidget)
           break
         case 'audioModule':
-          newModuleObject = new AudioModule(audioContext, newModuleElement)
+          newModuleObject = new AudioModule(audioContext, newModuleElement, newWidget)
           break
         case 'vcaModule':
-          newModuleObject = new VcaModule(audioContext, newModuleElement)
+          newModuleObject = new VcaModule(audioContext, newModuleElement, newWidget)
           break
         case 'mixerModule':
-          newModuleObject = new MixerModule(audioContext, newModuleElement)
+          newModuleObject = new MixerModule(audioContext, newModuleElement, newWidget)
           break
         case 'wnModule':
-          newModuleObject = new WnModule(audioContext, newModuleElement)
+          newModuleObject = new WnModule(audioContext, newModuleElement, newWidget)
           break
         case 'lfoModule':
-          newModuleObject = new LfoModule(audioContext, newModuleElement)
+          newModuleObject = new LfoModule(audioContext, newModuleElement, newWidget)
           break
         case 'visModule':
-          newModuleObject = new VisModule(audioContext, newModuleElement)
+          newModuleObject = new VisModule(audioContext, newModuleElement, newWidget)
           break
         case 'clockModule':
-          newModuleObject = new ClockModule(audioContext, newModuleElement)
+          newModuleObject = new ClockModule(audioContext, newModuleElement, newWidget)
           break
         case 'gateModule':
-          newModuleObject = new GateModule(audioContext, newModuleElement)
+          newModuleObject = new GateModule(audioContext, newModuleElement, newWidget)
           break
         case 'envModule':
-          newModuleObject = new EnvModule(audioContext, newModuleElement)
+          newModuleObject = new EnvModule(audioContext, newModuleElement, newWidget)
           break
         default:
           break
@@ -426,7 +427,7 @@ function loadCustomModule (index, placeX, placeY) {
     x: placeX,
     y: placeY,
     noResize: true,
-    content: '<div class="module">' + customModulesArray[index].html + '</div>'
+    content: '<div class="module"><button class="delete-button"><span class="material-icons">delete</span></button>' + customModulesArray[index].html + '</div>'
   })
 
   // newModuleObject speichert das neue Modul als Object
@@ -435,7 +436,7 @@ function loadCustomModule (index, placeX, placeY) {
   const newModuleElement = newWidget.getElementsByClassName('module')[0]
 
   // das newModuleObject wird als CustomModule erstellt
-  newModuleObject = new CustomModule(audioContext, newModuleElement, customModulesArray[index].numOfInputs, customModulesArray[index].numOfOutputs, customModulesArray[index].function, customModulesArray[index].parameters)
+  newModuleObject = new CustomModule(audioContext, newModuleElement, customModulesArray[index].numOfInputs, customModulesArray[index].numOfOutputs, customModulesArray[index].function, customModulesArray[index].parameters, customModulesArray[index].id, newWidget)
 
   // das neue newModuleObject wird in das moduleArray gesetzt
   moduleArray.push(newModuleObject)
@@ -531,47 +532,58 @@ function initModuleFunctions (newWidget, newModuleObject) {
   const newModuleDeleteElement = newWidget.getElementsByClassName('delete-button')[0]
   // dem Delete-Button wird Funktionalität hinzugefügt
   newModuleDeleteElement.addEventListener('click', function () {
-    // removeConnectionsArray werden Indexe für alle Connections gespeichert, die gelöscht werden müssen
-    const removeConnectionsArray = []
-
-    // eine Schleife, die über alle bestehenden Connections läuft
-    for (let i = 0; i < connectionArray.length; i++) {
-      // Wenn eine bestehende Connection das aktuelle (zu löschende) Modul betrifft, wird diese Verbindung getrennt und in das removeConnectionsArray hinzugefügt
-      if (connectionArray[i].endModule === newModuleObject || connectionArray[i].startModule === newModuleObject) {
-        connectionArray[i].disconnectModules()
-        connectionArray[i].removeLine()
-        removeConnectionsArray.push(i)
-      }
-    }
-
-    if (removeConnectionsArray.length >= 0) {
-      // eine Schleife, die Rückwerts über alle zu löschende Connection-Indexe läuft und sie aus dem connectionArray entfernt
-      for (let i = removeConnectionsArray.length - 1; i >= 0; i--) {
-        connectionArray.splice(removeConnectionsArray[i], 1)
-      }
-    }
-
-    // das Modul-Objekt und Modul-DOM-Element werden gelöscht
-    newModuleObject.deleteNode()
-    let removeModuleIndex = -1
-    // eine Schleife, die über das modulArray läuft, um das aktuelle Modul daraus zu löschen
-    for (let i = 0; i < moduleArray.length; i++) {
-      if (moduleArray[i] === newModuleObject) {
-        removeModuleIndex = i
-      }
-    }
-    moduleArray.splice(removeModuleIndex, 1)
-    newWidget.remove()
-    mainGrid.removeWidget(newWidget)
+    deleteModule(newModuleObject, newWidget)
   })
 }
+
+function deleteModule (deleteModuleObject, deleteGridWidget) {
+  // removeConnectionsArray werden Indexe für alle Connections gespeichert, die gelöscht werden müssen
+  const removeConnectionsArray = []
+
+  // eine Schleife, die über alle bestehenden Connections läuft
+  for (let i = 0; i < connectionArray.length; i++) {
+    // Wenn eine bestehende Connection das aktuelle (zu löschende) Modul betrifft, wird diese Verbindung getrennt und in das removeConnectionsArray hinzugefügt
+    if (connectionArray[i].endModule === deleteModuleObject || connectionArray[i].startModule === deleteModuleObject) {
+      connectionArray[i].disconnectModules()
+      connectionArray[i].removeLine()
+      removeConnectionsArray.push(i)
+    }
+  }
+
+  if (removeConnectionsArray.length >= 0) {
+    // eine Schleife, die Rückwerts über alle zu löschende Connection-Indexe läuft und sie aus dem connectionArray entfernt
+    for (let i = removeConnectionsArray.length - 1; i >= 0; i--) {
+      connectionArray.splice(removeConnectionsArray[i], 1)
+    }
+  }
+
+  // das Modul-Objekt und Modul-DOM-Element werden gelöscht
+  deleteModuleObject.deleteNode()
+  let removeModuleIndex = -1
+  // eine Schleife, die über das modulArray läuft, um das aktuelle Modul daraus zu löschen
+  for (let i = 0; i < moduleArray.length; i++) {
+    if (moduleArray[i] === deleteModuleObject) {
+      removeModuleIndex = i
+    }
+  }
+  moduleArray.splice(removeModuleIndex, 1)
+  deleteGridWidget.remove()
+  mainGrid.removeWidget(deleteGridWidget)
+}
+
+document.getElementsByClassName('reset-synth')[0].addEventListener('click', function () {
+  for (let i = moduleArray.length - 1; i >= 0; i--) {
+    deleteModule(moduleArray[i], moduleArray[i].widget)
+  }
+
+  loadModule(1, 0, 0)
+})
 
 // ------------- CREATE MODULE ----------------------------------------------------------------------------------------
 
 let moduleDropdownCurrent = -1
 const moduleEditorElement = document.getElementsByClassName('module-editor')[0]
-const createModuleButtonElement = document.getElementsByClassName('create-module')[0]
-createModuleButtonElement.addEventListener('click', function () {
+document.getElementsByClassName('create-module')[0].addEventListener('click', function () {
   moduleEditorElement.classList.add('move-up')
 })
 
@@ -601,7 +613,7 @@ moduleDropdownElement.addEventListener('change', (event) => {
   const moduleEditorButton = document.getElementsByClassName('create-module-button')[0]
   moduleEditorButton.value = 'Create Module'
 
-  let newName = 'Module Name'
+  let newName = ''
   let newWidth = null
   let newInputs = null
   let newOutputs = null
@@ -687,7 +699,55 @@ document.getElementsByClassName('creator-form')[0].addEventListener('submit', (e
     customModulesArray[moduleDropdownCurrent].html = '' + document.getElementsByClassName('create-module-html')[0].value
     customModulesArray[moduleDropdownCurrent].function = '' + document.getElementsByClassName('create-module-js')[0].value
     customModulesArray[moduleDropdownCurrent].parameters = newParameters
+
+    editModuleDropdownMenu()
+    updateCustomModulesMenu()
+    moduleDropdownElement.value = (moduleDropdownCurrent + 1).toString().padStart(2, '0') + ' - ' + customModulesArray[moduleDropdownCurrent].name
+
+    for (let i = moduleArray.length - 1; i >= 0; i--) {
+      if (moduleArray[i] instanceof CustomModule) {
+        if (moduleArray[i].id === moduleDropdownCurrent) {
+          const saveConnectionsNumber = []
+
+          for (let j = connectionArray.length - 1; j >= 0; j--) {
+            if (connectionArray[j].endModule === moduleArray[i]) {
+              connectionArray.push(new Connection(cableCanvas, connectionArray[j].startElem, null, connectionArray[j].startModule, connectionArray[j].startOutput, connectionArray[j].colorNr))
+              saveConnectionsNumber.push([connectionArray[j].endInput, connectionArray[j].endElem.getAttribute('type')])
+            } else if (connectionArray[j].startModule === moduleArray[i]) {
+              connectionArray.push(new Connection(cableCanvas, connectionArray[j].endElem, null, connectionArray[j].endModule, connectionArray[j].endInput, connectionArray[j].colorNr))
+              saveConnectionsNumber.push([connectionArray[j].startOutput, connectionArray[j].startElem.getAttribute('type')])
+            }
+          }
+
+          const oldX = moduleArray[i].widget.getAttribute('gs-x')
+          const oldY = moduleArray[i].widget.getAttribute('gs-y')
+          const oldParameters = moduleArray[i].parameters
+          deleteModule(moduleArray[i], moduleArray[i].widget)
+          loadCustomModule(moduleDropdownCurrent, oldX, oldY)
+
+          for (let j = 0; j < saveConnectionsNumber.length; j++) {
+            connectionArray[connectionArray.length - 1 - j].endModule = moduleArray[moduleArray.length - 1]
+            connectionArray[connectionArray.length - 1 - j].endInput = saveConnectionsNumber[saveConnectionsNumber.length - 1 - j][0]
+            const newModulePlugList = moduleArray[moduleArray.length - 1].moduleElement.getElementsByClassName('plug-button')
+
+            for (let k = 0; k < newModulePlugList.length; k++) {
+              if (getPlugIDfromPlug(newModulePlugList[k]) === saveConnectionsNumber[saveConnectionsNumber.length - 1 - j][0] && newModulePlugList[k].getAttribute('type') === saveConnectionsNumber[saveConnectionsNumber.length - 1 - j][1]) {
+                connectionArray[connectionArray.length - 1 - j].endElem = newModulePlugList[k]
+              }
+            }
+
+            connectionArray[connectionArray.length - 1 - j].update()
+            connectionArray[connectionArray.length - 1 - j].connectModules()
+          }
+
+          if (moduleArray[moduleArray.length - 1] instanceof CustomModule) {
+            moduleArray[moduleArray.length - 1].updateParamatersFromPrevious(oldParameters)
+          }
+        }
+      }
+    }
   } else {
+    const newID = customModulesArray.length
     customModulesArray.push({
       name: '' + document.getElementsByClassName('create-module-name')[0].value,
       html: '' + document.getElementsByClassName('create-module-html')[0].value,
@@ -695,7 +755,8 @@ document.getElementsByClassName('creator-form')[0].addEventListener('submit', (e
       numOfInputs: document.getElementsByClassName('create-module-inputs')[0].value,
       numOfOutputs: document.getElementsByClassName('create-module-outputs')[0].value,
       function: '' + document.getElementsByClassName('create-module-js')[0].value,
-      parameters: newParameters
+      parameters: newParameters,
+      id: newID
     })
     editModuleDropdownMenu()
     updateCustomModulesMenu()

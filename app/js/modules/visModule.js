@@ -3,8 +3,8 @@
 import Module from './module.js'
 
 export default class VisModule extends Module {
-  constructor (audioContext, moduleElement) {
-    super(moduleElement)
+  constructor (audioContext, moduleElement, widget) {
+    super(moduleElement, widget)
 
     this.numberOfInputs = 1
     this.numberOfOutputs = 0

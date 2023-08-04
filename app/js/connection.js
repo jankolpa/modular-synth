@@ -10,6 +10,7 @@ export default class Connection {
 
     this.startElem = startElem
     this.endElem = endElem
+    this.colorNr = colorNr
 
     const startX = this.startElem.getBoundingClientRect().left + window.scrollX + this.startElem.getBoundingClientRect().width / 2
     const startY = this.startElem.getBoundingClientRect().top + window.scrollY + this.startElem.getBoundingClientRect().height / 2

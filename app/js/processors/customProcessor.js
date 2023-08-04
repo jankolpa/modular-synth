@@ -34,8 +34,14 @@ class CustomProcessor extends AudioWorkletProcessor {
             this.ioAssignment = e.data[1]
           }
         } else if (e.data[0] === 'fn') {
-          // eslint-disable-next-line no-new-func
-          this.processFunction = Function('inputs', 'outputs', 'parameterMap', String(e.data[1]))
+          try {
+            // eslint-disable-next-line no-new-func
+            this.processFunction = Function('inputs', 'outputs', 'parameterMap', String(e.data[1]))
+          } catch (error) {
+            console.error('ERROR: process-Funktion konnte nicht als Funktion eingelesen werden.')
+            console.error(error)
+            this.port.postMessage('ERROR: process-Funktion konnte nicht als Funktion eingelesen werden.\n\n' + error)
+          }
         } else if (e.data[0] === 'initPara') {
           // eslint-disable-next-line no-new-func
           this.paramaterMap.set(e.data[1], { value: e.data[2], minValue: e.data[3], maxValue: e.data[4] })
@@ -88,10 +94,20 @@ class CustomProcessor extends AudioWorkletProcessor {
       preparedOutputs.push(outputs[i][0])
     }
 
-    const processFunctionOutputs = this.processFunction(preparedInputs, preparedOutputs, this.paramaterMap)
+    let processFunctionOutputs = null
+    try {
+      processFunctionOutputs = this.processFunction(preparedInputs, preparedOutputs, this.paramaterMap)
+    } catch (error) {
+      console.error('ERROR: process-Funktion konnte nicht ausgeführt werden.')
+      console.error(error)
+      this.port.postMessage('ERROR: process-Funktion konnte nicht ausgeführt werden.\n\n' + error)
+      return false
+    }
 
     for (let i = 0; i < this.numberOfOutputs; i++) {
-      outputs[i][0].set(processFunctionOutputs[i])
+      if (processFunctionOutputs !== null) {
+        outputs[i][0].set(processFunctionOutputs[i])
+      }
     }
     return true
   }
