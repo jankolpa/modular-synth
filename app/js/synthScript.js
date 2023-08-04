@@ -86,6 +86,7 @@ const mainGrid = GridStack.init({
   animate: false
 })
 document.getElementsByClassName('grid-stack')[0].style.width = '' + gridHeight * 6 + 'px'
+document.getElementsByClassName('bg-bar-box')[0].style.height = '' + 2 * gridHeight + 'px'
 
 // ------------- DRAGGING AND SCREEN-MOVING ---------------------------------------------------------------------------
 // isDraggingModule speichert ob ein Modul gerade gedragged wird
@@ -796,7 +797,8 @@ addEventListener('resize', (event) => {
   gridResizeStyle.innerHTML = '.grid-stack{ height: ' + (2 * gridHeight + 3) + 'px !important; min-height: ' + 2 * gridHeight + 'px !important; }' +
         '.grid-stack-item { height: ' + gridHeight + 'px !important; min-height: ' + gridHeight + 'px !important; }' +
         ' .grid-stack-item-content { min-height: ' + gridHeight + 'px !important; }' +
-        ' .grid-stack-item[gs-y="1"]:not(.ui-draggable-dragging) { top: ' + gridHeight + 'px !important; }'
+        ' .grid-stack-item[gs-y="1"]:not(.ui-draggable-dragging) { top: ' + gridHeight + 'px !important; }' +
+        ' .bg-bar-box { height: ' + (gridHeight * 2) + 'px !important; } '
 
   mainGrid.opts.cellHeight = gridHeight
 
