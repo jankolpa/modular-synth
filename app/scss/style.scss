@@ -134,9 +134,9 @@ body {
         left: 0;
         width: 100%;
         height: 100%;
-        border: black 1px solid;
+        border: #1f1f1f 1px solid;
         box-sizing: border-box;
-        opacity: .8;
+        opacity: 1;
         pointer-events: none;
     }
 }
@@ -392,10 +392,11 @@ $columns: 50;
 
     .visualizer {
         position: absolute;
-        width: 80%;
-        left: 10%;
-        height: 66%;
-        border: #000 2px solid;
+        width: 84%;
+        left: 8%;
+        height: 64%;
+        outline: solid calc($module-size-px / 170) #000;
+        border-radius: calc($module-size-px / 40);
     }
 }
 

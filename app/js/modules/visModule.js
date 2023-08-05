@@ -22,28 +22,37 @@ export default class VisModule extends Module {
     this.zoomFactor = 1
     this.canvasIsCleared = false
 
+    const image = document.getElementsByClassName('vis_display')[0]
+    console.log(image)
+
     // Festlegen der Linienfarbe und -breite
     this.canvasContext.strokeStyle = 'rgb(255, 0, 0)'
     this.canvasContext.lineWidth = 1
 
     const drawWaveform = function () {
       requestAnimationFrame(drawWaveform)
+      this.canvasContext.drawImage(image, 0, 0, this.canvas.width, this.canvas.height)
+      this.canvasContext.beginPath()
+      this.canvasContext.moveTo(0, this.canvas.height / 2)
+      this.canvasContext.lineTo(this.canvas.width, this.canvas.height / 2)
+      this.canvasContext.stroke()
+      this.canvasContext.strokeStyle = '#ebf007'
 
       if (this.ioAssignment[0][0] === true) {
         this.analyser.getByteTimeDomainData(this.dataArray)
 
         this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.height)
-        this.canvasContext.fillStyle = 'rgb(200, 200, 200)'
-        this.canvasContext.fillRect(0, 0, this.canvas.width, this.canvas.height)
+        this.canvasContext.drawImage(image, 0, 0, this.canvas.width, this.canvas.height)
         this.canvasContext.beginPath()
 
-        const sliceWidth = this.canvas.width * 1.0 / (this.bufferLength - 1)
+        const sliceWidth = this.canvas.width * 1.05 / (this.bufferLength - 1)
         let x = 0
 
         for (let i = 0; i < this.bufferLength; i++) {
           let v = (256 - this.dataArray[i]) / 128.0
+          v = (v - 1) * 0.95 + 1
           v = (v - 1) * this.zoomFactor + 1
-          const y = v * this.canvas.height / 2
+          const y = v * (this.canvas.height / 2)
 
           if (i === 0) {
             this.canvasContext.moveTo(x, y)
@@ -61,8 +70,6 @@ export default class VisModule extends Module {
       } else {
         if (this.canvasIsCleared === false) {
           this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.height)
-          this.canvasContext.fillStyle = 'rgb(200, 200, 200)'
-          this.canvasContext.fillRect(0, 0, this.canvas.width, this.canvas.height)
           this.canvasContext.beginPath()
           this.canvasContext.moveTo(0, this.canvas.height / 2)
           this.canvasContext.lineTo(this.canvas.width, this.canvas.height / 2)
