@@ -198,12 +198,7 @@ moduleConfigXHR.onreadystatechange = function () {
   if (moduleConfigXHR.readyState == 4 && moduleConfigXHR.status == '200') {
     moduleConfigData = JSON.parse(moduleConfigXHR.responseText)
     initModuleMenu() // alle Module werden im Menü abgebildet
-    loadModule(0, 0, 0) // ein Modul wird direkt manuell geladen
-    loadModule(1, 3, 0)
-    loadModule(5, 5, 0)
-    loadModule(9, 0, 1)
-    loadModule(7, 4, 1)
-    loadModule(6, 6, 1)
+    loadModule(1, 0, 0) // ein Modul wird direkt manuell geladen
   }
 }
 
