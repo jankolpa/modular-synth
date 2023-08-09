@@ -198,7 +198,7 @@ moduleConfigXHR.onreadystatechange = function () {
   if (moduleConfigXHR.readyState == 4 && moduleConfigXHR.status == '200') {
     moduleConfigData = JSON.parse(moduleConfigXHR.responseText)
     initModuleMenu() // alle Module werden im Menü abgebildet
-    loadModule(1, 0, 0) // ein Modul wird direkt manuell geladen
+    loadModule(0, 0, 0) // ein Modul wird direkt manuell geladen
   }
 }
 
@@ -456,7 +456,7 @@ function initModuleFunctions (newWidget, newModuleObject) {
     newModulePlugList[i].addEventListener('mousedown', (e) => {
       if (e.button === 0) {
         // plugAlreadyConnected speichert, ob das aktuelle Plug schon eine Connection hat
-        let plugAlreadyConnected = false
+        let moveConnection = false
 
         // Es wird überprüft ob der Nutzer einer Connection löst
         // Dies kann nur der Fall sein wenn der Nutzer 1) auf ein IN-Plug drückt oder 2) auf ein OUT-Plug ohne der Shift-Taste drückt
@@ -465,7 +465,7 @@ function initModuleFunctions (newWidget, newModuleObject) {
           for (let j = connectionArray.length - 1; j >= 0; j--) {
             // gibt es schon eine Connection, die das aktuelle Plug beinhaltet?
             if (connectionArray[j].startElem === newModulePlugList[i] || connectionArray[j].endElem === newModulePlugList[i]) {
-              plugAlreadyConnected = true
+              moveConnection = true
               // die aktuelle Connection wird getrennt
               connectionArray[j].disconnectModules()
 
@@ -506,7 +506,7 @@ function initModuleFunctions (newWidget, newModuleObject) {
 
         // wenn der Nutzer durch sein Klick keine bestehende Connection getrennt hat, (da der IN-Plug leer war oder er einen OUT-Plug mit Shift benutzt hat)
         // dann wird eine neue Connection erstellt
-        if (plugAlreadyConnected === false) {
+        if (moveConnection === false) {
           // neue Connection wird erstellt, vom aktuellen Plug zu null mit dem aktullen FarbIndex
           connectionArray.push(new Connection(cableCanvas, newModulePlugList[i], null, newModuleObject, getPlugIDfromPlug(newModulePlugList[i]), connectionColorIndex))
           connectionColorIndex++

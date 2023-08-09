@@ -1,14 +1,14 @@
 {
     "modules": [
         {
-            "id": "vcoModule",
-            "width": 3,
-            "name": "VCO"
-        },
-        {
             "id": "audioModule",
             "width": 2,
             "name": "Audio"
+        },
+        {
+            "id": "vcoModule",
+            "width": 3,
+            "name": "VCO"
         },
         {
             "id": "vcaModule",
