@@ -36,7 +36,6 @@
 </head>
 
 <body>
-
   <div id="top-bar" class="shadow-sm vw-100">
     <nav class="navbar navbar-expand navbar-light bg-white">
       <a class="navbar-brand">MODULAR SYNTH</a>
@@ -61,7 +60,7 @@
           </li>
           <li class="nav-item">
             <a class="nav-link text-dark" data-toggle="popover" data-placement="bottom"
-              data-content="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."
+              data-content="Der modulare Synthesizer enstand in Verbindung mit einer Bachelorthesis. Weiter Informationen gibt es unter https://github.com/jankolpa/modular-synth."
               href="#">Info</a>
           </li>
         </ul>
@@ -79,21 +78,17 @@
 
   <svg id="line-canvas" version="1.1" xmlns="http://www.w3.org/2000/svg"></svg>
 
-
   <div class="module-editor overflow-auto">
     <button class="btn btn-dark editor-close-button pt-1 pl-1 pr-1 pb-0 shadow-sm"><span
         class="material-icons">close</span></button>
-
     <form class="creator-form">
       <p class="mb-1">Select Module</p>
       <select class="form-control mb-2 create-module-dropdown">
       </select>
-
       <hr />
-
       <p class="mt-2 mb-1">Name
         <button type="button" class="btn btn-light pt-1 pl-1 pr-1 pb-0" data-toggle="popover"
-          data-content="And here's some amazing content. It's very engaging. Right?"><span
+          data-content="Gib den Modul einen eigenen Namen, er wird in der Modulleiste angezeigt."><span
             class="material-symbols-outlined info-button">info</span></button>
       </p>
       <input required type="text" autocomplete="off" class="form-control create-module-name"
@@ -104,7 +99,7 @@
           <div class="col-4 pl-0">
             <p class="mt-3 mb-1">Width
               <button type="button" class="btn btn-light pt-1 pl-1 pr-1 pb-0" data-toggle="popover"
-                data-content="And here's some amazing content. It's very engaging. Right?"><span
+                data-content="Lege die Breite deines Moduls fest."><span
                   class="material-symbols-outlined button">info</span></button>
             </p>
             <input required type="number" class="form-control create-module-width" placeholder="" min="1">
@@ -112,7 +107,7 @@
           <div class="col-4 p-0">
             <p class="mt-3 mb-1">Number of Inputs
               <button type="button" class="btn btn-light pt-1 pl-1 pr-1 pb-0" data-toggle="popover"
-                data-content="And here's some amazing content. It's very engaging. Right?"><span
+                data-content="Lege die Anzahl der Eingänge fest."><span
                   class="material-symbols-outlined button">info</span></button>
             </p>
             <input required type="number" class="form-control create-module-inputs" placeholder="" min="0">
@@ -120,7 +115,7 @@
           <div class="col-4 pr-0">
             <p class="mt-3 mb-1">Number of Outputs
               <button type="button" class="btn btn-light pt-1 pl-1 pr-1 pb-0" data-toggle="popover"
-                data-content="And here's some amazing content. It's very engaging. Right?"><span
+                data-content="Lege die Anzahl der Ausgänge fest."><span
                   class="material-symbols-outlined button">info</span></button>
             </p>
             <input required type="number" class="form-control create-module-outputs" placeholder="" min="0">
@@ -130,14 +125,15 @@
 
       <p class="mt-3 mb-1">Module-HTML
         <button type="button" class="btn btn-light pt-1 pl-1 pr-1 pb-0" data-toggle="popover"
-          data-content="And here's some amazing content. It's very engaging. Right?"><span
+          data-content="Schreibe HTML für dein Modul. Lege Stecker und Drehknöpfe fest. Stecker müssen einen Index haben."><span
             class="material-symbols-outlined button">info</span></button>
       </p>
       <textarea class="form-control code-area create-module-html" rows="20" spellcheck="false"></textarea>
 
       <p class="mt-3 mb-1">Process-Function
         <button type="button" class="btn btn-light pt-1 pl-1 pr-1 pb-0" data-toggle="popover"
-          data-content="And here's some amazing content. It's very engaging. Right?"><span
+          data-content="Schreibe JavaScript für dein Modul. Der Parameter inputs ist ein Array der Eingänge als Float32Array, ebenso outputs. 
+          Gebe einen bearbeiteten outputs-Parameter zurück. Auf eigen-erstellte Paramater kannst du über parameterMap.get('Name').value zugreifen."><span
             class="material-symbols-outlined button">info</span></button>
       </p>
       <textarea readonly disabled class="form-control code-area pre-js-code mb-0" rows="1"
@@ -147,19 +143,15 @@
       <textarea readonly disabled class="form-control code-area post-js-code mt-0 mb-2" rows="1"
         spellcheck="false">}</textarea>
 
-
       <p class="mt-3 mb-1">Parameter
         <button type="button" class="btn btn-light pt-1 pl-1 pr-1 pb-0 align-middle" data-toggle="popover"
-          data-content="And here's some amazing content. It's very engaging. Right?"><span
+          data-content="Lege eigene Paramater an und greife auf sie zu. Die ersten Parameter werden ja nach Anzahl der Drehregler gleich mit Drehreglern verknüpft."><span
             class="material-symbols-outlined button">info</span></button>
         <button type="button" class="btn btn-secondary create-module-parameter align-middle">Add</button>
       </p>
       <ul class="list-group parameter-list"></ul>
-
       <hr />
-
       <input type="submit" value="Create Module" class="btn btn-dark mt-1 create-module-button"></input>
-
     </form>
   </div>
 

@@ -47,7 +47,7 @@ document.head.appendChild(gridResizeStyle)
 
 // customModulesArray speicher alle costum-modules des Nutzer in einem Array mit Objekten
 const customModulesArray = []
-// temporary
+// temporary Modules
 customModulesArray.push({
   name: 'Custom Mixer',
   html: '<h1 style="top: 8%; left: 50%;">NEUES<br>MODULE</h1>\n\n<div class="rotary-knob" style="top: 20%; left: 31%;">\n\t<input type="range" class="input-knob" data-diameter="100px" data-src="./assets/knob_1.png" data-sprites="99" />\n\t<div><a class="input-text">GAIN</a></div>\n</div>\n\n<div class="rotary-knob" style="top: 20%; left: 69%;">\n\t<input type="range" class="input-knob" data-diameter="100px" data-src="./assets/knob_1.png" data-sprites="99" />\n\t<div><a class="input-text">MIX</a></div>\n</div>\n\n<div class="plug" style="top: 45%; left: 31%;">\n\t<button class="plug-button index-0" type="in"></button>\n\t<div><a class="plug-text">IN 1</a></div>\n</div>\n\n<div class="plug" style="top: 45%; left: 69%;">\n\t<button class="plug-button index-1" type="in"></button>\n\t<div><a class="plug-text">IN 2</a></div>\n</div>\n\n<div class="plug" style="top: 65%; left: 31%;">\n\t<button class="plug-button index-0" type="out"></button>\n\t<div><a class="plug-text">OUT 1</a></div>\n</div>\n\n<div class="plug" style="top: 65%; left: 69%;">\n\t<button class="plug-button index-1" type="out"></button>\n\t<div><a class="plug-text">OUT 2</a></div>\n</div>\n\n<div class="plug" style="top: 82%; left: 50%;">\n\t<button class="plug-button index-2" type="out"></button>\n\t<div><a class="plug-text">MIX</a></div>\n</div>',
@@ -577,7 +577,7 @@ document.getElementsByClassName('reset-synth')[0].addEventListener('click', func
     deleteModule(moduleArray[i], moduleArray[i].widget)
   }
 
-  loadModule(1, 0, 0)
+  loadModule(0, 0, 0)
 })
 
 // ------------- CREATE MODULE ----------------------------------------------------------------------------------------
